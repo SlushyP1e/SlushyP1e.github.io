@@ -59,7 +59,7 @@
     <div class="container mx-auto px-6">
       <h1 class="text-5xl font-extrabold text-pink-800">GIF Gallery 🎬</h1>
       <p class="mt-2 text-lg text-pink-600">Click any link to copy it!</p>
-      <a href="/" class="inline-block mt-4 px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-500 transition">
+      <a href="index.html" class="inline-block mt-4 px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-500 transition">
         ← Back to Home
       </a>
     </div>
@@ -82,6 +82,16 @@
     Link copied to clipboard! ✓
   </div>
 
+  <!-- GIF Modal -->
+  <div id="gif-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4" onclick="closeModal(event)">
+    <div class="relative max-w-4xl max-h-full">
+      <img id="modal-gif" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg">
+      <button onclick="closeModal(event)" class="absolute top-4 right-4 bg-white text-gray-800 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition text-2xl font-bold">
+        ×
+      </button>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="text-center py-8 bg-pink-200">
     <p class="text-gray-700">&copy; 2025 SlushyPie totally a real corporation</p>
@@ -92,6 +102,7 @@
   const gifFiles = [
     'slushypie-vrchat.gif',
     'slushypie-eat.gif',
+    // Add all your GIF filenames here
   ];
 
   const baseUrl = window.location.origin + '/gif/';
@@ -108,6 +119,34 @@
     });
   }
 
+  function openModal(url, filename) {
+    const modal = document.getElementById('gif-modal');
+    const modalGif = document.getElementById('modal-gif');
+    modalGif.src = url;
+    modalGif.alt = filename;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(event) {
+    if (event.target.id === 'gif-modal' || event.target.tagName === 'BUTTON') {
+      const modal = document.getElementById('gif-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('gif-modal');
+      if (!modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    }
+  });
+
   function loadGifs() {
     if (gifFiles.length === 0) {
       emptyState.classList.remove('hidden');
@@ -121,8 +160,8 @@
       card.className = 'bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow';
       
       card.innerHTML = `
-        <div class="relative">
-          <img src="${fullUrl}" alt="${filename}" class="w-full h-48 object-cover">
+        <div class="relative cursor-pointer" onclick="openModal('${fullUrl}', '${filename}')">
+          <img src="${fullUrl}" alt="${filename}" class="w-full h-48 object-cover hover:opacity-90 transition">
         </div>
         <div class="p-4">
           <p class="text-sm text-gray-600 mb-2 truncate">${filename}</p>
