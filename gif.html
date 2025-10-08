@@ -8,6 +8,17 @@
   <style>
     html {
       scroll-behavior: smooth;
+      height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
     }
 
     @keyframes floaty {
@@ -62,7 +73,7 @@
 
     <!-- Empty state -->
     <div id="empty-state" class="text-center py-12 hidden">
-      <p class="text-gray-600 text-lg">No GIFs found in the /gifs folder yet!</p>
+      <p class="text-gray-600 text-lg">No GIFs found in the /gif folder yet!</p>
     </div>
   </main>
 
@@ -72,19 +83,20 @@
   </div>
 
   <!-- Footer -->
-  <footer class="text-center py-8 bg-pink-200 mt-16">
+  <footer class="text-center py-8 bg-pink-200">
     <p class="text-gray-700">&copy; 2025 SlushyPie totally a real corporation</p>
   </footer>
 
 <script>
   // List your GIF filenames here
   const gifFiles = [
-    'slushypie-eat.gif',
-    'slushypie-vrchat.gif',
+    'example1.gif',
+    'example2.gif',
+    'example3.gif',
     // Add all your GIF filenames here
   ];
 
-  const baseUrl = window.location.origin + '/gifs/';
+  const baseUrl = window.location.origin + '/gif/';
   const gifGrid = document.getElementById('gif-grid');
   const emptyState = document.getElementById('empty-state');
   const notification = document.getElementById('copied-notification');
