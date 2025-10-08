@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SlushyPie's GIF Gallery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    .floaty { animation: floaty 3s ease-in-out infinite; }
+
+    .bg-floaty { 
+      transition: transform 0.1s ease-out;
+    }
+
+    body { overflow-x: hidden; }
+
+    .copied-notification {
+      animation: fadeInOut 2s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(10px); }
+      20% { opacity: 1; transform: translateY(0); }
+      80% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-pink-100 to-white text-gray-800 font-sans relative">
+
+  <!-- Transparent Background Image -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <img src="SlushyPieBannerTransparent.png" alt="Background" 
+         class="w-full h-full object-cover opacity-20 bg-floaty">
+  </div>
+
+  <!-- Header -->
+  <header class="py-16 text-center">
+    <div class="container mx-auto px-6">
+      <h1 class="text-5xl font-extrabold text-pink-800">GIF Gallery 🎬</h1>
+      <p class="mt-2 text-lg text-pink-600">Click any link to copy it!</p>
+      <a href="index.html" class="inline-block mt-4 px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-500 transition">
+        ← Back to Home
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto px-6 py-12">
+    <div id="gif-grid" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- GIFs will be loaded here -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="text-center py-12 hidden">
+      <p class="text-gray-600 text-lg">No GIFs found in the /gifs folder yet!</p>
+    </div>
+  </main>
+
+  <!-- Copied notification -->
+  <div id="copied-notification" class="fixed bottom-8 right-8 bg-pink-600 text-white px-6 py-3 rounded-lg shadow-lg hidden copied-notification">
+    Link copied to clipboard! ✓
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-8 bg-pink-200 mt-16">
+    <p class="text-gray-700">&copy; 2025 SlushyPie totally a real corporation</p>
+  </footer>
+
+<script>
+  // List your GIF filenames here
+  const gifFiles = [
+    'slushypie-eat.gif',
+    'slushypie-vrchat.gif',
+    // Add all your GIF filenames here
+  ];
+
+  const baseUrl = window.location.origin + '/gifs/';
+  const gifGrid = document.getElementById('gif-grid');
+  const emptyState = document.getElementById('empty-state');
+  const notification = document.getElementById('copied-notification');
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      notification.classList.remove('hidden');
+      setTimeout(() => {
+        notification.classList.add('hidden');
+      }, 2000);
+    });
+  }
+
+  function loadGifs() {
+    if (gifFiles.length === 0) {
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    gifFiles.forEach(filename => {
+      const fullUrl = baseUrl + filename;
+      
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow';
+      
+      card.innerHTML = `
+        <div class="relative">
+          <img src="${fullUrl}" alt="${filename}" class="w-full h-48 object-cover">
+        </div>
+        <div class="p-4">
+          <p class="text-sm text-gray-600 mb-2 truncate">${filename}</p>
+          <button onclick="copyToClipboard('${fullUrl}')" 
+                  class="w-full px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-500 transition">
+            Copy Link
+          </button>
+        </div>
+      `;
+      
+      gifGrid.appendChild(card);
+    });
+  }
+
+  // Load GIFs when page loads
+  window.addEventListener('load', () => {
+    loadGifs();
+  });
+
+  // Background animation
+  const bg = document.querySelector('.bg-floaty');
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 10;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
+  });
+
+  let t = 0;
+  function animateBackground() {
+    t += 0.005;
+    
+    const targetX = Math.sin(t) * 15 + mouseX;
+    const targetY = Math.sin(t * 0.8) * 10 + mouseY;
+    
+    currentX += (targetX - currentX) * 0.05;
+    currentY += (targetY - currentY) * 0.05;
+    
+    if (bg) {
+      bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
+    }
+    
+    requestAnimationFrame(animateBackground);
+  }
+
+  window.addEventListener('load', () => {
+    animateBackground();
+  });
+</script>
+
+</body>
+</html>
