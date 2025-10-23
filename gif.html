@@ -6,14 +6,12 @@
     <title>GIF Gallery - SlushyPie</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      .bg-floaty {
-        transition: transform 0.1s ease-out;
-      }
+      .bg-floaty { transition: transform 0.1s ease-out; }
       body { overflow-x: hidden; }
     </style>
   </head>
   <body class="relative flex min-h-screen flex-col bg-pink-100 font-sans text-gray-800">
-    <!-- Transparent Background Image -->
+    <!-- Background -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
       <img src="SlushyPieBannerTransparent.png" alt="Background" class="bg-floaty h-full w-full object-cover opacity-20" />
     </div>
@@ -22,27 +20,25 @@
       <!-- Header -->
       <header class="mb-12">
         <h1 class="mb-2 flex items-center gap-3 text-5xl font-bold text-gray-900">
-          <span>🎬</span>
-          <span>GIF Gallery</span>
+          <span>🎬</span><span>GIF Gallery</span>
         </h1>
         <p class="mb-6 text-lg text-gray-600">Click any link to copy it!</p>
         <a href="/" class="inline-flex items-center gap-2 rounded-lg border border-pink-200 bg-pink-50 px-4 py-2 font-medium text-gray-900 transition-all hover:-translate-y-0.5 hover:bg-pink-100">
-          <span>←</span>
-          <span>Back to Home</span>
+          <span>←</span><span>Back to Home</span>
         </a>
       </header>
 
-      <!-- Gallery Grid -->
+      <!-- Gallery -->
       <div id="gif-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-
-      <!-- Empty State -->
       <div id="empty-state" class="hidden py-20 text-center">
         <p class="text-lg text-gray-600">No GIFs found in the /gif folder yet!</p>
       </div>
     </div>
 
     <!-- Notification -->
-    <div id="notification" class="pointer-events-none fixed right-8 bottom-8 z-50 translate-y-2 transform rounded-lg bg-gray-900 px-5 py-3 text-white opacity-0 shadow-lg transition-all duration-300">Link copied to clipboard ✓</div>
+    <div id="notification" class="pointer-events-none fixed right-8 bottom-8 z-50 translate-y-2 transform rounded-lg bg-gray-900 px-5 py-3 text-white opacity-0 shadow-lg transition-all duration-300">
+      Link copied to clipboard ✓
+    </div>
 
     <!-- Modal -->
     <div id="modal" class="bg-opacity-70 fixed inset-0 z-50 hidden items-center justify-center bg-black p-5 backdrop-blur-sm" onclick="closeModal(event)">
@@ -60,11 +56,16 @@
     <script>
       const gifGrid = document.getElementById('gif-grid');
       const emptyState = document.getElementById('empty-state');
-      const baseUrl = window.location.origin + '/gif/';
       const notification = document.getElementById('notification');
       const modal = document.getElementById('modal');
       const modalGif = document.getElementById('modal-gif');
 
+      // Paths
+      const repoPath = '/SlushyP1e.github.io';
+      const gifFolder = repoPath + '/gif/';
+      const jsonPath = gifFolder + 'gifs.json?t=' + Date.now(); // prevent caching
+
+      // Clipboard
       function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
           notification.classList.remove('opacity-0', 'translate-y-2');
@@ -76,6 +77,7 @@
         });
       }
 
+      // Modal
       function openModal(url, filename) {
         modalGif.src = url;
         modalGif.alt = filename;
@@ -92,7 +94,7 @@
         }
       }
 
-      document.addEventListener('keydown', (e) => {
+      document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && modal.classList.contains('flex')) {
           modal.classList.add('hidden');
           modal.classList.remove('flex');
@@ -100,11 +102,11 @@
         }
       });
 
+      // Add GIF card
       function addGifCard(filename) {
-        const fullUrl = baseUrl + filename;
+        const fullUrl = gifFolder + filename;
         const card = document.createElement('div');
         card.className = 'bg-white border border-pink-200 rounded-lg overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1';
-
         card.innerHTML = `
           <div class="cursor-pointer" onclick="openModal('${fullUrl}', '${filename}')">
             <img src="${fullUrl}" alt="${filename}" class="w-full h-48 object-cover bg-pink-50 hover:opacity-90 transition">
@@ -119,10 +121,13 @@
         gifGrid.appendChild(card);
       }
 
+      // Load GIFs from JSON
       async function loadGifs() {
         try {
-          const response = await fetch(baseUrl + 'gifs.json');
+          const response = await fetch(jsonPath);
           const gifFiles = await response.json();
+          console.log('GIFs loaded:', gifFiles);
+
           if (!gifFiles.length) {
             emptyState.classList.remove('hidden');
             return;
@@ -134,29 +139,32 @@
         }
       }
 
-      window.addEventListener('load', () => {
-        loadGifs();
-
-        // Background animation
+      // Background animation
+      function initBackground() {
         const bg = document.querySelector('.bg-floaty');
         let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, t = 0;
 
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', e => {
           mouseX = (e.clientX / window.innerWidth - 0.5) * 10;
           mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
         });
 
-        function animateBackground() {
+        function animate() {
           t += 0.005;
           const targetX = Math.sin(t) * 15 + mouseX;
           const targetY = Math.sin(t * 0.8) * 10 + mouseY;
           currentX += (targetX - currentX) * 0.05;
           currentY += (targetY - currentY) * 0.05;
           if (bg) bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
-          requestAnimationFrame(animateBackground);
+          requestAnimationFrame(animate);
         }
 
-        animateBackground();
+        animate();
+      }
+
+      window.addEventListener('load', () => {
+        loadGifs();
+        initBackground();
       });
     </script>
   </body>
