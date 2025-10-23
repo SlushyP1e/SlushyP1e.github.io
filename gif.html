@@ -1,110 +1,119 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GIF Gallery - SlushyPie</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      .bg-floaty { transition: transform 0.1s ease-out; }
-      body { overflow-x: hidden; }
-    </style>
-  </head>
-  <body class="relative flex min-h-screen flex-col bg-pink-100 font-sans text-gray-800">
-    <!-- Background -->
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-      <img src="SlushyPieBannerTransparent.png" alt="Background" class="bg-floaty h-full w-full object-cover opacity-20" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIF Gallery - SlushyPie</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-floaty { transition: transform 0.1s ease-out; }
+    body { overflow-x: hidden; }
+  </style>
+</head>
+<body class="relative flex min-h-screen flex-col bg-pink-100 font-sans text-gray-800">
+  <!-- Transparent Background Image -->
+  <div class="fixed inset-0 -z-10 overflow-hidden">
+    <img src="SlushyPieBannerTransparent.png" alt="Background" class="bg-floaty h-full w-full object-cover opacity-20" />
+  </div>
+
+  <div class="mx-auto max-w-6xl flex-1 px-6 py-16">
+    <!-- Header -->
+    <header class="mb-12">
+      <h1 class="mb-2 flex items-center gap-3 text-5xl font-bold text-gray-900">
+        <span>🎬</span>
+        <span>GIF Gallery</span>
+      </h1>
+      <p class="mb-6 text-lg text-gray-600">Click any link to copy it!</p>
+      <a href="/" class="inline-flex items-center gap-2 rounded-lg border border-pink-200 bg-pink-50 px-4 py-2 font-medium text-gray-900 transition-all hover:-translate-y-0.5 hover:bg-pink-100">
+        <span>←</span>
+        <span>Back to Home</span>
+      </a>
+    </header>
+
+    <!-- Gallery Grid -->
+    <div id="gif-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden py-20 text-center">
+      <p class="text-lg text-gray-600">No GIFs found in the /gif folder yet!</p>
     </div>
+  </div>
 
-    <div class="mx-auto max-w-6xl flex-1 px-6 py-16">
-      <!-- Header -->
-      <header class="mb-12">
-        <h1 class="mb-2 flex items-center gap-3 text-5xl font-bold text-gray-900">
-          <span>🎬</span><span>GIF Gallery</span>
-        </h1>
-        <p class="mb-6 text-lg text-gray-600">Click any link to copy it!</p>
-        <a href="/" class="inline-flex items-center gap-2 rounded-lg border border-pink-200 bg-pink-50 px-4 py-2 font-medium text-gray-900 transition-all hover:-translate-y-0.5 hover:bg-pink-100">
-          <span>←</span><span>Back to Home</span>
-        </a>
-      </header>
+  <!-- Notification -->
+  <div id="notification" class="pointer-events-none fixed right-8 bottom-8 z-50 translate-y-2 transform rounded-lg bg-gray-900 px-5 py-3 text-white opacity-0 shadow-lg transition-all duration-300">
+    Link copied to clipboard ✓
+  </div>
 
-      <!-- Gallery -->
-      <div id="gif-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-      <div id="empty-state" class="hidden py-20 text-center">
-        <p class="text-lg text-gray-600">No GIFs found in the /gif folder yet!</p>
-      </div>
+  <!-- Modal -->
+  <div id="modal" class="bg-opacity-70 fixed inset-0 z-50 hidden items-center justify-center bg-black p-5 backdrop-blur-sm" onclick="closeModal(event)">
+    <div class="relative max-h-full max-w-5xl">
+      <button onclick="closeModal(event)" class="absolute -top-10 right-0 flex h-8 w-8 items-center justify-center rounded bg-white text-2xl font-bold text-gray-800 transition hover:bg-gray-100">×</button>
+      <img id="modal-gif" src="" alt="" class="max-h-[90vh] max-w-full rounded-lg object-contain shadow-2xl" />
     </div>
+  </div>
 
-    <!-- Notification -->
-    <div id="notification" class="pointer-events-none fixed right-8 bottom-8 z-50 translate-y-2 transform rounded-lg bg-gray-900 px-5 py-3 text-white opacity-0 shadow-lg transition-all duration-300">
-      Link copied to clipboard ✓
-    </div>
+  <!-- Footer -->
+  <footer class="mt-20 border-t border-gray-200 py-6 text-center text-sm text-gray-600">
+    <p>&copy; 2025 SlushyPie totally a real corporation</p>
+  </footer>
 
-    <!-- Modal -->
-    <div id="modal" class="bg-opacity-70 fixed inset-0 z-50 hidden items-center justify-center bg-black p-5 backdrop-blur-sm" onclick="closeModal(event)">
-      <div class="relative max-h-full max-w-5xl">
-        <button onclick="closeModal(event)" class="absolute -top-10 right-0 flex h-8 w-8 items-center justify-center rounded bg-white text-2xl font-bold text-gray-800 transition hover:bg-gray-100">×</button>
-        <img id="modal-gif" src="" alt="" class="max-h-[90vh] max-w-full rounded-lg object-contain shadow-2xl" />
-      </div>
-    </div>
+  <script>
+    const gifFiles = [
+      'slushypie-vrchat.gif',
+      'slushypie-eat.gif',
+      'MyHonestReaction.gif',
+      'SlushyPieMyBeloved.gif',
+    ];
+    const baseUrl = window.location.origin + '/gif/';
+    const gifGrid = document.getElementById('gif-grid');
+    const emptyState = document.getElementById('empty-state');
+    const notification = document.getElementById('notification');
+    const modal = document.getElementById('modal');
+    const modalGif = document.getElementById('modal-gif');
 
-    <!-- Footer -->
-    <footer class="mt-20 border-t border-gray-200 py-6 text-center text-sm text-gray-600">
-      <p>&copy; 2025 SlushyPie totally a real corporation</p>
-    </footer>
-
-    <script>
-      const gifGrid = document.getElementById('gif-grid');
-      const emptyState = document.getElementById('empty-state');
-      const notification = document.getElementById('notification');
-      const modal = document.getElementById('modal');
-      const modalGif = document.getElementById('modal-gif');
-
-      // Paths
-      const repoPath = '/SlushyP1e.github.io';
-      const gifFolder = repoPath + '/gif/';
-      const jsonPath = gifFolder + 'gifs.json?t=' + Date.now(); // prevent caching
-
-      // Clipboard
-      function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-          notification.classList.remove('opacity-0', 'translate-y-2');
-          notification.classList.add('opacity-100', 'translate-y-0');
-          setTimeout(() => {
-            notification.classList.add('opacity-0', 'translate-y-2');
-            notification.classList.remove('opacity-100', 'translate-y-0');
-          }, 2000);
-        });
-      }
-
-      // Modal
-      function openModal(url, filename) {
-        modalGif.src = url;
-        modalGif.alt = filename;
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeModal(event) {
-        if (event.target === modal || event.target.tagName === 'BUTTON') {
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-          document.body.style.overflow = 'auto';
-        }
-      }
-
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && modal.classList.contains('flex')) {
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
-          document.body.style.overflow = 'auto';
-        }
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        notification.classList.remove('opacity-0', 'translate-y-2');
+        notification.classList.add('opacity-100', 'translate-y-0');
+        setTimeout(() => {
+          notification.classList.add('opacity-0', 'translate-y-2');
+          notification.classList.remove('opacity-100', 'translate-y-0');
+        }, 2000);
       });
+    }
 
-      // Add GIF card
-      function addGifCard(filename) {
-        const fullUrl = gifFolder + filename;
+    function openModal(url, filename) {
+      modalGif.src = url;
+      modalGif.alt = filename;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(event) {
+      if (event.target === modal || event.target.tagName === 'BUTTON') {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('flex')) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    function loadGifs() {
+      if (gifFiles.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      gifFiles.forEach(filename => {
+        const fullUrl = baseUrl + filename;
         const card = document.createElement('div');
         card.className = 'bg-white border border-pink-200 rounded-lg overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1';
         card.innerHTML = `
@@ -119,53 +128,35 @@
           </div>
         `;
         gifGrid.appendChild(card);
-      }
+      });
+    }
 
-      // Load GIFs from JSON
-      async function loadGifs() {
-        try {
-          const response = await fetch(jsonPath);
-          const gifFiles = await response.json();
-          console.log('GIFs loaded:', gifFiles);
-
-          if (!gifFiles.length) {
-            emptyState.classList.remove('hidden');
-            return;
-          }
-          gifFiles.forEach(filename => addGifCard(filename));
-        } catch (err) {
-          console.error('Failed to load GIFs:', err);
-          emptyState.classList.remove('hidden');
-        }
-      }
+    window.addEventListener('load', () => {
+      loadGifs();
 
       // Background animation
-      function initBackground() {
-        const bg = document.querySelector('.bg-floaty');
-        let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, t = 0;
+      const bg = document.querySelector('.bg-floaty');
+      let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, t = 0;
 
-        document.addEventListener('mousemove', e => {
-          mouseX = (e.clientX / window.innerWidth - 0.5) * 10;
-          mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
-        });
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 10;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
+      });
 
-        function animate() {
-          t += 0.005;
-          const targetX = Math.sin(t) * 15 + mouseX;
-          const targetY = Math.sin(t * 0.8) * 10 + mouseY;
-          currentX += (targetX - currentX) * 0.05;
-          currentY += (targetY - currentY) * 0.05;
-          if (bg) bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
-          requestAnimationFrame(animate);
+      function animateBackground() {
+        t += 0.005;
+        const targetX = Math.sin(t) * 15 + mouseX;
+        const targetY = Math.sin(t * 0.8) * 10 + mouseY;
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+        if (bg) {
+          bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
         }
-
-        animate();
+        requestAnimationFrame(animateBackground);
       }
 
-      window.addEventListener('load', () => {
-        loadGifs();
-        initBackground();
-      });
-    </script>
-  </body>
+      animateBackground();
+    });
+  </script>
+</body>
 </html>
