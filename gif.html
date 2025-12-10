@@ -1,162 +1,308 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GIF Gallery - SlushyPie</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .bg-floaty { transition: transform 0.1s ease-out; }
-    body { overflow-x: hidden; }
-  </style>
-</head>
-<body class="relative flex min-h-screen flex-col bg-pink-100 font-sans text-gray-800">
-  <!-- Transparent Background Image -->
-  <div class="fixed inset-0 -z-10 overflow-hidden">
-    <img src="SlushyPieBannerTransparent.png" alt="Background" class="bg-floaty h-full w-full object-cover opacity-20" />
-  </div>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIF Gallery | SlushyPie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-  <div class="mx-auto max-w-6xl flex-1 px-6 py-16">
-    <!-- Header -->
-    <header class="mb-12">
-      <h1 class="mb-2 flex items-center gap-3 text-5xl font-bold text-gray-900">
-        <span>🎬</span>
-        <span>GIF Gallery</span>
-      </h1>
-      <p class="mb-6 text-lg text-gray-600">Click any link to copy it!</p>
-      <a href="/" class="inline-flex items-center gap-2 rounded-lg border border-pink-200 bg-pink-50 px-4 py-2 font-medium text-gray-900 transition-all hover:-translate-y-0.5 hover:bg-pink-100">
-        <span>←</span>
-        <span>Back to Home</span>
-      </a>
-    </header>
-
-    <!-- Gallery Grid -->
-    <div id="gif-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-
-    <!-- Empty State -->
-    <div id="empty-state" class="hidden py-20 text-center">
-      <p class="text-lg text-gray-600">No GIFs found in the /gif folder yet!</p>
-    </div>
-  </div>
-
-  <!-- Notification -->
-  <div id="notification" class="pointer-events-none fixed right-8 bottom-8 z-50 translate-y-2 transform rounded-lg bg-gray-900 px-5 py-3 text-white opacity-0 shadow-lg transition-all duration-300">
-    Link copied to clipboard ✓
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="bg-opacity-70 fixed inset-0 z-50 hidden items-center justify-center bg-black p-5 backdrop-blur-sm" onclick="closeModal(event)">
-    <div class="relative max-h-full max-w-5xl">
-      <button onclick="closeModal(event)" class="absolute -top-10 right-0 flex h-8 w-8 items-center justify-center rounded bg-white text-2xl font-bold text-gray-800 transition hover:bg-gray-100">×</button>
-      <img id="modal-gif" src="" alt="" class="max-h-[90vh] max-w-full rounded-lg object-contain shadow-2xl" />
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer class="mt-20 border-t border-gray-200 py-6 text-center text-sm text-gray-600">
-    <p>&copy; 2025 SlushyPie totally a real corporation</p>
-  </footer>
-
-  <script>
-    const gifFiles = [
-      'slushypie-vrchat.gif',
-      'slushypie-eat.gif',
-      'MyHonestReaction.gif',
-      'SlushyPieMyBeloved.gif',
-    ];
-    const baseUrl = window.location.origin + '/gif/';
-    const gifGrid = document.getElementById('gif-grid');
-    const emptyState = document.getElementById('empty-state');
-    const notification = document.getElementById('notification');
-    const modal = document.getElementById('modal');
-    const modalGif = document.getElementById('modal-gif');
-
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        notification.classList.remove('opacity-0', 'translate-y-2');
-        notification.classList.add('opacity-100', 'translate-y-0');
-        setTimeout(() => {
-          notification.classList.add('opacity-0', 'translate-y-2');
-          notification.classList.remove('opacity-100', 'translate-y-0');
-        }, 2000);
-      });
-    }
-
-    function openModal(url, filename) {
-      modalGif.src = url;
-      modalGif.alt = filename;
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(event) {
-      if (event.target === modal || event.target.tagName === 'BUTTON') {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = 'auto';
-      }
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('flex')) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = 'auto';
-      }
-    });
-
-    function loadGifs() {
-      if (gifFiles.length === 0) {
-        emptyState.classList.remove('hidden');
-        return;
-      }
-
-      gifFiles.forEach(filename => {
-        const fullUrl = baseUrl + filename;
-        const card = document.createElement('div');
-        card.className = 'bg-white border border-pink-200 rounded-lg overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1';
-        card.innerHTML = `
-          <div class="cursor-pointer" onclick="openModal('${fullUrl}', '${filename}')">
-            <img src="${fullUrl}" alt="${filename}" class="w-full h-48 object-cover bg-pink-50 hover:opacity-90 transition">
-          </div>
-          <div class="p-4">
-            <p class="text-sm text-gray-600 mb-3 truncate">${filename}</p>
-            <button onclick="copyToClipboard('${fullUrl}')" class="w-full px-4 py-2 bg-pink-50 border border-pink-200 rounded text-gray-900 font-medium hover:bg-pink-100 transition">
-              Copy Link
-            </button>
-          </div>
-        `;
-        gifGrid.appendChild(card);
-      });
-    }
-
-    window.addEventListener('load', () => {
-      loadGifs();
-
-      // Background animation
-      const bg = document.querySelector('.bg-floaty');
-      let mouseX = 0, mouseY = 0, currentX = 0, currentY = 0, t = 0;
-
-      document.addEventListener('mousemove', (e) => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 10;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 10;
-      });
-
-      function animateBackground() {
-        t += 0.005;
-        const targetX = Math.sin(t) * 15 + mouseX;
-        const targetY = Math.sin(t * 0.8) * 10 + mouseY;
-        currentX += (targetX - currentX) * 0.05;
-        currentY += (targetY - currentY) * 0.05;
-        if (bg) {
-          bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.02)`;
+        :root {
+            --shadow-color: #000;
+            --card-bg: #fff;
         }
-        requestAnimationFrame(animateBackground);
-      }
 
-      animateBackground();
-    });
-  </script>
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #fbcfe8; /* Pink-200 */
+            background-image: radial-gradient(#be185d 1px, transparent 1px);
+            background-size: 24px 24px; /* Notebook dot pattern */
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Neo-Brutalist "Pop" Cards */
+        .neo-card {
+            background: var(--card-bg);
+            border: 3px solid #000;
+            box-shadow: 6px 6px 0px 0px var(--shadow-color);
+            transition: all 0.15s ease-in-out;
+            position: relative;
+        }
+
+        .neo-card:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px var(--shadow-color);
+        }
+        
+        /* Neo Button */
+        .neo-btn {
+            background-color: #fff;
+            border: 2px solid #000;
+            box-shadow: 4px 4px 0px 0px #000;
+            transition: all 0.1s ease-in-out;
+        }
+        .neo-btn:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #000;
+        }
+        .neo-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #000;
+        }
+
+        /* Utility for slight random rotations */
+        .rotate-left { transform: rotate(-1deg); }
+        .rotate-right { transform: rotate(1deg); }
+        .rotate-left:hover, .rotate-right:hover { transform: rotate(0deg) translate(2px, 2px); }
+
+        /* Modal Transitions */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms ease-out, transform 200ms ease-out; }
+        .modal-exit { opacity: 1; transform: scale(1); }
+        .modal-exit-active { opacity: 0; transform: scale(0.95); transition: opacity 200ms ease-in, transform 200ms ease-in; }
+
+        .copy-toast { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .bg-floaty {
+            will-change: transform;
+            transition: transform 0.1s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900 pb-10 relative">
+
+    <!-- Floating Background Image -->
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none flex items-center justify-center mix-blend-multiply opacity-20">
+        <img id="floating-bg" src="SlushyPieBannerTransparent.png" alt="" class="bg-floaty w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8 md:py-16">
+        
+        <!-- Header -->
+        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <a href="index.html" class="neo-btn inline-flex items-center gap-2 text-xs font-bold text-black uppercase mb-4 px-3 py-1.5 rounded-lg bg-white hover:bg-pink-200">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+                </a>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight uppercase flex items-center gap-3">
+                    <span class="text-pink-600 bg-white border-2 border-black px-2 shadow-[4px_4px_0px_0px_#000]">GIFS</span> Gallery
+                </h1>
+                <p class="text-slate-700 mt-2 font-bold font-mono text-sm bg-white inline-block border-2 border-black px-2 py-1">
+                    > My collection of gifs. Click to view and or copy.
+                </p>
+            </div>
+        </header>
+
+        <!-- Gallery Grid -->
+        <div id="gif-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Items injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden py-20 text-center neo-card rounded-xl bg-white">
+            <i data-lucide="film" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
+            <p class="text-lg font-bold font-mono text-slate-500">No GIFs found in the /gif folder yet!</p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-16 text-xs font-bold text-slate-500 uppercase tracking-widest">
+            &copy; 2025 SlushyPie — totally a real corporation
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" aria-hidden="true">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-pink-900/80 backdrop-blur-sm transition-opacity opacity-0" id="modal-backdrop" onclick="closeModal()"></div>
+        
+        <!-- Content -->
+        <div class="relative w-full max-w-5xl z-10 opacity-0 transform scale-95 transition-all duration-200" id="modal-content">
+            <button onclick="closeModal()" class="absolute -top-6 -right-2 md:-right-6 md:-top-10 text-white hover:text-pink-300 transition-colors bg-black border-2 border-white rounded-full p-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-1 hover:shadow-none transition-all">
+                <i data-lucide="x" class="w-8 h-8"></i>
+            </button>
+            <div class="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] rounded-xl overflow-hidden flex items-center justify-center p-2">
+                <img id="modal-gif" src="" alt="" class="max-h-[85vh] w-auto rounded-lg object-contain border-2 border-slate-200" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-[60]">
+        <i data-lucide="check-circle" class="w-6 h-6 text-pink-500"></i>
+        <span class="font-bold font-mono">LINK COPIED!</span>
+    </div>
+
+    <script>
+        // CONFIG
+        const gifFiles = [
+          'slushypie-vrchat.gif',
+          'slushypie-eat.gif',
+          'MyHonestReaction.gif',
+          'SlushyPieMyBeloved.gif',
+        ];
+        // Use relative path logic if needed, or stick to origin/gif/
+        const baseUrl = window.location.origin + '/gif/';
+        const gifGrid = document.getElementById('gif-grid');
+        const emptyState = document.getElementById('empty-state');
+        const modal = document.getElementById('modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const modalGif = document.getElementById('modal-gif');
+        const toast = document.getElementById('toast');
+
+        // FUNCTIONS
+        function loadGifs() {
+            if (gifFiles.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            gifFiles.forEach((filename, index) => {
+                const fullUrl = baseUrl + filename;
+                
+                // Create Card
+                const card = document.createElement('div');
+                // Random rotation to match index aesthetic
+                const rotation = index % 2 === 0 ? 'rotate-left' : 'rotate-right';
+                
+                card.className = `neo-card ${rotation} rounded-xl overflow-hidden group flex flex-col bg-white`;
+                
+                card.innerHTML = `
+                    <div class="relative cursor-pointer overflow-hidden aspect-video bg-slate-100 border-b-3 border-black" onclick="openModal('${fullUrl}', '${filename}')">
+                        <img src="${fullUrl}" alt="${filename}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                            <div class="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] rounded-full p-2 text-black transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                                <i data-lucide="maximize-2" class="w-6 h-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 flex items-center justify-between gap-3 bg-white">
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-800 truncate font-mono uppercase" title="${filename}">${filename}</p>
+                            <span class="text-[10px] bg-slate-200 px-1 border border-black font-bold">GIF</span>
+                        </div>
+                        <button onclick="copyToClipboard('${fullUrl}')" class="p-2 border-2 border-black bg-pink-300 hover:bg-white transition-colors shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[2px] active:shadow-none rounded-lg" title="Copy Link">
+                            <i data-lucide="link" class="w-4 h-4 text-black"></i>
+                        </button>
+                    </div>
+                `;
+                
+                gifGrid.appendChild(card);
+            });
+            
+            // Re-init icons for new elements
+            lucide.createIcons();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }).catch(() => {
+                // Fallback
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast();
+            });
+        }
+
+        function showToast() {
+            toast.classList.remove('hidden');
+            toast.classList.add('copy-toast');
+            setTimeout(() => toast.classList.add('hidden'), 2000);
+        }
+
+        function openModal(url, filename) {
+            modalGif.src = url;
+            modalGif.alt = filename;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.remove('opacity-0', 'scale-95');
+                modalContent.classList.add('opacity-100', 'scale-100');
+            });
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.remove('opacity-100', 'scale-100');
+            modalContent.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+                modalGif.src = '';
+            }, 200);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            loadGifs();
+            lucide.createIcons();
+            // Start background animation
+            animateBackground();
+        });
+
+        // --- Background Floating Logic ---
+        const bg = document.getElementById('floating-bg');
+        let mouseX = 0;
+        let mouseY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            // Normalized -0.5 to 0.5 range
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 20; // intensity
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 20; 
+        });
+
+        let animTime = 0; // Renamed from 't' to avoid conflicts
+        function animateBackground() {
+            animTime += 0.005; 
+
+            // Calculate float + mouse interaction
+            const targetX = Math.sin(animTime) * 15 + mouseX; 
+            const targetY = Math.sin(animTime * 0.8) * 10 + mouseY;
+
+            // Smooth interpolation
+            currentX += (targetX - currentX) * 0.05;
+            currentY += (targetY - currentY) * 0.05;
+
+            if (bg) {
+                // Apply transform
+                bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.1)`;
+            }
+
+            requestAnimationFrame(animateBackground);
+        }
+    </script>
 </body>
 </html>
