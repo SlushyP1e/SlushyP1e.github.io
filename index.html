@@ -4,86 +4,77 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SlushyPie | Professional Nerd Bully</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --shadow-color: #000;
-            --card-bg: #fff;
+            --shadow: 6px 6px 0px 0px #000;
+            --shadow-hover: 2px 2px 0px 0px #000;
         }
 
         body {
-            font-family: 'Space Mono', monospace; /* Nerdy coding font */
-            background-color: #fbcfe8; /* Pink-200 */
+            font-family: 'Space Mono', monospace;
+            background-color: #fbcfe8;
             background-image: radial-gradient(#be185d 1px, transparent 1px);
-            background-size: 24px 24px; /* Notebook dot pattern */
+            background-size: 24px 24px;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .font-display {
-            font-family: 'Fredoka', sans-serif; /* Playful bold font */
-        }
+        .heading-font { font-family: 'Fredoka', sans-serif; }
 
-        /* Neo-Brutalist "Pop" Cards */
-        .neo-card {
-            background: var(--card-bg);
+        /* Custom Card Styles */
+        .bento-card {
+            background: #fff;
             border: 3px solid #000;
-            box-shadow: 6px 6px 0px 0px var(--shadow-color);
+            box-shadow: var(--shadow);
             transition: all 0.15s ease-in-out;
             position: relative;
         }
 
-        /* The "Click" feel on hover */
-        .neo-card:hover {
+        .bento-card:hover {
             transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px 0px var(--shadow-color);
+            box-shadow: var(--shadow-hover);
         }
 
-        /* Utility for slight random rotations to look less robotic */
-        .rotate-left { transform: rotate(-1deg); }
-        .rotate-right { transform: rotate(1deg); }
-        .rotate-left:hover, .rotate-right:hover { transform: rotate(0deg) translate(2px, 2px); }
+        /* Tilt utilities */
+        .tilt-l { transform: rotate(-1deg); }
+        .tilt-r { transform: rotate(1deg); }
+        .tilt-l:hover, .tilt-r:hover { transform: rotate(0deg) translate(2px, 2px); }
 
-        .copy-toast {
+        .toast-anim {
             animation: slideUp 0.3s ease-out forwards;
         }
+
         @keyframes slideUp {
             from { opacity: 0; transform: translate(-50%, 20px); }
             to { opacity: 1; transform: translate(-50%, 0); }
         }
-        
-        .bg-floaty {
-            will-change: transform;
-            transition: transform 0.1s ease-out;
-        }
     </style>
 </head>
+
 <body class="min-h-screen text-slate-900 selection:bg-black selection:text-pink-300 pb-10 relative">
 
-    <!-- Floating Background Image (Subtle Texture) -->
-    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none flex items-center justify-center mix-blend-multiply opacity-20">
-        <img id="floating-bg" src="SlushyPieBannerTransparent.png" alt="" class="bg-floaty w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+    <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
+        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
     </div>
 
-    <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 py-8 md:py-16">
         
-        <!-- Bento Grid Layout -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             
-            <!-- 1. Profile Card (Hero) -->
-            <!-- Added slight rotation (-1deg) to break the grid -->
-            <div class="neo-card rotate-left rounded-xl p-8 md:col-span-2 md:row-span-1 flex flex-col sm:flex-row items-center sm:items-start gap-6 group">
+            <div class="bento-card tilt-l rounded-xl p-8 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <div class="relative shrink-0">
-                    <img src="SlushyPies.png" alt="SlushyPie" class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white">
-                    <div class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 border-2 border-black" title="Online / Vibing"></div>
+                    <img src="SlushyPies.png" alt="SlushyPie" class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 border-2 border-black" title="Online"></div>
                 </div>
                 
                 <div class="text-center sm:text-left z-10 w-full">
-                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2 uppercase">SlushyPie</h1>
-                    <p class="text-sm font-bold bg-black text-white inline-block px-2 py-1 mb-4 transform -skew-x-6">NERD BULLY & GAMER</p>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2 uppercase heading-font">SlushyPie</h1>
+                    <p class="text-sm font-bold bg-black text-white inline-block px-2 py-1 mb-4 -skew-x-6">NERD BULLY & GAMER</p>
                     <div class="flex flex-wrap justify-center sm:justify-start gap-2">
                         <span class="px-3 py-1 border-2 border-black bg-pink-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">VRChat</span>
                         <span class="px-3 py-1 border-2 border-black bg-purple-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">Resonite</span>
@@ -92,40 +83,32 @@
                 </div>
             </div>
 
-            <!-- 2. Discord / Contact Card -->
-            <div class="neo-card rotate-right rounded-xl p-6 md:col-span-2 flex flex-col justify-center cursor-pointer bg-indigo-50" onclick="copyDiscord()">
+            <div id="discord-card" class="bento-card tilt-r rounded-xl p-6 md:col-span-2 flex flex-col justify-center cursor-pointer bg-indigo-50">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-3">
                         <div class="bg-[#5865F2] p-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white">
                             <i data-lucide="message-circle" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg font-display">DISCORD</h3>
+                            <h3 class="font-bold text-lg heading-font">DISCORD</h3>
                             <p class="text-xs font-bold text-slate-500 uppercase">Hit me up (maybe)</p>
                         </div>
                     </div>
-                    <i data-lucide="copy" class="text-black transition-colors w-5 h-5"></i>
+                    <i data-lucide="copy" class="text-black w-5 h-5"></i>
                 </div>
                 
                 <div class="bg-white p-3 border-2 border-black flex justify-between items-center mb-4">
                     <span class="font-bold text-lg select-all">@slushypie</span>
                     <span class="text-[10px] font-bold bg-black text-white px-2 py-1">COPY</span>
                 </div>
-
                 <div class="space-y-2 text-xs font-bold text-slate-600">
                     <p class="italic bg-yellow-200 inline px-1 border border-black border-dashed">"No guarantee I accept lol"</p>
-                    <p class="mt-2">
-                        Find me in:
-                        <a href="https://discord.com/invite/AF2m2uh" target="_blank" class="underline hover:text-pink-600 hover:bg-black hover:text-white px-1 transition-all relative" onclick="event.stopPropagation()">The Black Cat Server</a>
-                    </p>
+                    <p class="mt-2">Find me in: <a href="https://discord.com/invite/AF2m2uh" class="underline hover:bg-black hover:text-white px-1 transition-all" target="_blank" rel="noopener">The Black Cat Server</a></p>
                 </div>
             </div>
 
-            <!-- 3. About Me -->
-            <div class="neo-card rounded-xl p-6 md:col-span-3 bg-white">
-                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 font-display uppercase border-b-4 border-pink-300 inline-block w-full">
-                    About Me
-                </h2>
+            <div class="bento-card rounded-xl p-6 md:col-span-3 bg-white">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 heading-font uppercase border-b-4 border-pink-300 inline-block w-full">About Me</h2>
                 <div class="prose font-mono text-sm md:text-base leading-relaxed text-slate-800">
                     <p class="mb-4">
                         Hey! I'm <strong>SlushyPie</strong>. Most of the time I'm hanging out in VRChat or Resonite (usually Black Cat, this is not an ad). I'm not a "content creator," just a person vibing, hanging out, sometimes being mean to people.
@@ -137,177 +120,135 @@
                 </div>
             </div>
 
-            <!-- 4. Quick Stats / Hobbies -->
-            <div class="neo-card rotate-right rounded-xl p-6 md:col-span-1 flex flex-col justify-between bg-yellow-50">
-                <h3 class="font-bold font-display text-xl mb-4 border-b-2 border-black pb-2">
-                    STUFF I DO
-                </h3>
+            <div class="bento-card tilt-r rounded-xl p-6 md:col-span-1 flex flex-col justify-between bg-yellow-50">
+                <h3 class="font-bold heading-font text-xl mb-4 border-b-2 border-black pb-2">STUFF I DO</h3>
                 <ul class="space-y-3 text-xs font-bold text-slate-800">
-                    <li class="flex items-start gap-2">
-                        <span class="shrink-0 text-pink-600">-></span>
-                        <span>World hopping like a Idiot</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-600">-></span>
-                        <span>Bullying nerds (fun way)</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-600">-></span>
-                        <span>Up until stupid hours</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-pink-600">-></span>
-                        <span>Disappearing for 3 weeks</span>
-                    </li>
+                    <li class="flex gap-2"><span class="text-pink-600">-></span> World hopping like a Idiot</li>
+                    <li class="flex gap-2"><span class="text-pink-600">-></span> Bullying nerds (fun way)</li>
+                    <li class="flex gap-2"><span class="text-pink-600">-></span> Up until stupid hours</li>
+                    <li class="flex gap-2"><span class="text-pink-600">-></span> Disappearing for 3 weeks</li>
                 </ul>
             </div>
 
-            <!-- 5. Social Links Grid -->
             <div class="md:col-span-2 grid grid-cols-2 gap-4">
-                <a href="https://www.tiktok.com/@slushypievrc" target="_blank" class="neo-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 group hover:bg-black hover:text-white">
+                <a href="https://www.tiktok.com/@slushypievrc" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white group">
                     <i data-lucide="music-2" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">TikTok</span>
                 </a>
-                
-                <a href="https://www.youtube.com/@slushypievrc" target="_blank" class="neo-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 group hover:bg-red-600 hover:text-white">
+                <a href="https://www.youtube.com/@slushypievrc" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-red-600 hover:text-white group">
                     <i data-lucide="youtube" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">YouTube</span>
                 </a>
-
-                <a href="https://steamcommunity.com/id/slushypie" target="_blank" class="neo-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 group hover:bg-[#1b2838] hover:text-white">
+                <a href="https://steamcommunity.com/id/slushypie" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#1b2838] hover:text-white group">
                     <i data-lucide="gamepad-2" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">Steam</span>
                 </a>
-
-                <a href="https://ko-fi.com/slushypie" target="_blank" class="neo-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 group hover:bg-[#29abe0] hover:text-white">
+                <a href="https://ko-fi.com/slushypie" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#29abe0] hover:text-white group">
                     <i data-lucide="coffee" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">Support Me</span>
                 </a>
             </div>
 
-            <!-- 6. Games Section -->
-            <div class="neo-card rounded-xl p-6 md:col-span-2 bg-slate-900 text-white">
-                <h3 class="font-bold mb-4 flex items-center gap-2 font-display text-xl">
-                    <i data-lucide="joystick" class="w-6 h-6 text-white"></i> MAIN GAMES
+            <div class="bento-card rounded-xl p-6 md:col-span-2 bg-slate-900 text-white">
+                <h3 class="font-bold mb-4 flex items-center gap-2 heading-font text-xl">
+                    <i data-lucide="joystick" class="w-6 h-6"></i> MAIN GAMES
                 </h3>
                 <div class="grid grid-cols-2 gap-4 h-32">
-                    <!-- VRChat -->
-                    <a href="https://hello.vrchat.com/" target="_blank" class="group relative overflow-hidden rounded-lg border-2 border-white/20 bg-slate-800 flex items-center justify-center p-4 hover:bg-white hover:border-white transition-all">
-                        <img src="VRC_Logo.png" class="h-16 w-auto object-contain group-hover:scale-110 transition-all duration-300" alt="VRChat" onerror="this.style.display='none'">
+                    <a href="https://hello.vrchat.com/" target="_blank" class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
+                        <img src="VRC_Logo.png" class="h-16 w-auto object-contain group-hover:scale-110 transition-transform" alt="VRChat" onerror="this.style.display='none'">
                     </a>
-                    <!-- Resonite -->
-                    <a href="https://resonite.com/" target="_blank" class="group relative overflow-hidden rounded-lg border-2 border-white/20 bg-slate-800 flex items-center justify-center p-4 hover:bg-white hover:border-white transition-all">
-                        <img src="resonitelogo.png" class="h-12 w-auto object-contain group-hover:scale-110 transition-all duration-300" alt="Resonite" onerror="this.style.display='none'">
+                    <a href="https://resonite.com/" target="_blank" class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
+                        <img src="resonitelogo.png" class="h-12 w-auto object-contain group-hover:scale-110 transition-transform" alt="Resonite" onerror="this.style.display='none'">
                     </a>
                 </div>
             </div>
 
-            <!-- 7. Special Content Links -->
             <div class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                <!-- GIF Gallery Highlight -->
-                <a href="gif.html" class="neo-card rotate-left rounded-xl p-4 flex items-center justify-between hover:bg-purple-200 group">
+                <a href="gif.html" class="bento-card tilt-l rounded-xl p-4 flex items-center justify-between hover:bg-purple-200 group">
                     <div class="flex items-center gap-4">
                         <div class="p-3 bg-purple-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             <i data-lucide="film" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <span class="font-bold block text-lg uppercase font-display">GIF Gallery</span>
+                            <span class="font-bold block text-lg uppercase heading-font">GIF Gallery</span>
                             <span class="text-xs font-bold text-slate-600 bg-white px-1 border border-black">MY GIFS</span>
                         </div>
                     </div>
                     <i data-lucide="arrow-right" class="border-2 border-black rounded-full p-1 w-8 h-8 group-hover:bg-black group-hover:text-white transition-colors"></i>
                 </a>
 
-                <!-- VRC Profile -->
-                 <a href="https://vrchat.com/home/user/usr_8a525779-3622-4f25-89d9-c15404516391" target="_blank" class="neo-card rotate-right rounded-xl p-4 flex items-center gap-4 hover:bg-pink-200 group">
+                 <a href="https://vrchat.com/home/user/usr_8a525779-3622-4f25-89d9-c15404516391" target="_blank" class="bento-card tilt-r rounded-xl p-4 flex items-center gap-4 hover:bg-pink-200 group">
                     <div class="p-3 bg-pink-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                         <i data-lucide="user-check" class="w-6 h-6"></i>
                     </div>
-                    <span class="font-bold text-lg uppercase font-display">VRChat Profile</span>
+                    <span class="font-bold text-lg uppercase heading-font">VRChat Profile</span>
                 </a>
             </div>
-
-             <div class="md:col-span-4 text-center mt-8 text-xs font-bold text-slate-500 uppercase tracking-widest">
+            
+            <div class="md:col-span-4 text-center mt-8 text-xs font-bold text-slate-500 uppercase tracking-widest">
                 &copy; 2025 SlushyPie — totally a real corporation
             </div>
-
         </div>
     </main>
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-50">
         <i data-lucide="check-circle" class="w-6 h-6 text-pink-500"></i>
         <span class="font-bold font-mono">COPIED TO CLIPBOARD!</span>
     </div>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
 
-        // Copy Function
-        function copyDiscord() {
-            const discordId = "slushypie";
-            navigator.clipboard.writeText(discordId).then(() => {
-                showToast();
-            }).catch(err => {
-                // Fallback
-                const textArea = document.createElement("textarea");
-                textArea.value = discordId;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                showToast();
-            });
-        }
+        // Copy Logic
+        const discordCard = document.getElementById('discord-card');
+        const toast = document.getElementById('toast');
+        const DISCORD_ID = "slushypie";
 
-        function showToast() {
-            const toast = document.getElementById('toast');
+        const showToast = () => {
             toast.classList.remove('hidden');
-            toast.classList.add('copy-toast');
-            
+            toast.classList.add('toast-anim');
             setTimeout(() => {
                 toast.classList.add('hidden');
+                toast.classList.remove('toast-anim');
             }, 3000);
-        }
+        };
 
-        // --- Background Floating Logic ---
-        const bg = document.getElementById('floating-bg');
-        let mouseX = 0;
-        let mouseY = 0;
-        let currentX = 0;
-        let currentY = 0;
-
-        // Track mouse position
-        document.addEventListener('mousemove', (e) => {
-            // Normalized -0.5 to 0.5 range
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 20; // intensity
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 20; 
+        discordCard.addEventListener('click', (e) => {
+            // Don't copy if clicking the actual link inside the card
+            if (e.target.tagName === 'A') return;
+            
+            navigator.clipboard.writeText(DISCORD_ID)
+                .then(showToast)
+                .catch(err => console.error("Clipboard failed:", err));
         });
 
-        let animTime = 0;
-        function animateBackground() {
-            animTime += 0.005; 
+        // Floating BG Logic
+        const bg = document.getElementById('bg-layer');
+        let mouse = { x: 0, y: 0 };
+        let current = { x: 0, y: 0 };
+        let t = 0;
 
-            // Calculate float + mouse interaction
-            const targetX = Math.sin(animTime) * 15 + mouseX; 
-            const targetY = Math.sin(animTime * 0.8) * 10 + mouseY;
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
+            mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
+        });
 
-            // Smooth interpolation
-            currentX += (targetX - currentX) * 0.05;
-            currentY += (targetY - currentY) * 0.05;
+        const loop = () => {
+            t += 0.005;
+            
+            const targetX = Math.sin(t) * 15 + mouse.x;
+            const targetY = Math.sin(t * 0.8) * 10 + mouse.y;
+
+            current.x += (targetX - current.x) * 0.05;
+            current.y += (targetY - current.y) * 0.05;
 
             if (bg) {
-                // Apply transform
-                bg.style.transform = `translate(${currentX}px, ${currentY}px) scale(1.1)`;
+                bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
             }
+            requestAnimationFrame(loop);
+        };
 
-            requestAnimationFrame(animateBackground);
-        }
-
-        // Start animation
-        animateBackground();
+        loop();
     </script>
 </body>
 </html>
