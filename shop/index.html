@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SlushyPie | Shop</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --shadow: 6px 6px 0px 0px #000;
+            --shadow-hover: 2px 2px 0px 0px #000;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #fbcfe8;
+            background-image: radial-gradient(#be185d 1px, transparent 1px);
+            background-size: 24px 24px;
+            overflow-x: hidden;
+        }
+
+        .heading-font { font-family: 'Fredoka', sans-serif; }
+
+        /* Custom Card Styles */
+        .bento-card {
+            background: #fff;
+            border: 3px solid #000;
+            box-shadow: var(--shadow);
+            transition: all 0.15s ease-in-out;
+            position: relative;
+        }
+
+        .bento-card:hover {
+            transform: translate(2px, 2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Tilt utilities */
+        .tilt-l { transform: rotate(-1deg); }
+        .tilt-r { transform: rotate(1deg); }
+        .tilt-l:hover, .tilt-r:hover { transform: rotate(0deg) translate(2px, 2px); }
+    </style>
+</head>
+
+<body class="min-h-screen text-slate-900 pb-10 relative flex flex-col items-center">
+
+    <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
+        <!-- Added ../ to jump out of the 'shop' folder and find the image in root -->
+        <img id="bg-layer" src="../SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-4xl px-4 py-8 md:py-16">
+        
+        <!-- Header & Back Button -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+            <!-- Added ../ to jump out of the 'shop' folder and find index.html in root -->
+            <a href="../index.html" class="bento-card bg-white px-4 py-2 rounded-full flex items-center gap-2 font-bold hover:bg-black hover:text-white group transition-colors">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span>BACK TO HOME</span>
+            </a>
+
+            <div class="text-center md:text-right">
+                <h1 class="text-4xl md:text-5xl font-bold uppercase heading-font bg-white inline-block px-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">THE SHOP</h1>
+                <p class="mt-2 text-sm font-bold bg-pink-500 text-white inline-block px-2 py-1 rotate-2">BUY MY STUFF PLEASE</p>
+            </div>
+        </div>
+
+        <!-- Shop Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- KO-FI CARD -->
+            <a href="https://ko-fi.com/slushypie/shop" target="_blank" class="bento-card tilt-l rounded-xl p-0 overflow-hidden flex flex-col group h-full">
+                <div class="bg-[#29abe0] p-8 flex items-center justify-center border-b-3 border-black relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')]"></div>
+                    <i data-lucide="coffee" class="w-24 h-24 text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] group-hover:scale-110 transition-transform duration-300"></i>
+                </div>
+                <div class="p-6 flex flex-col flex-grow bg-white">
+                    <h2 class="text-2xl font-bold heading-font uppercase mb-2">Ko-fi Shop</h2>
+                    <p class="text-sm text-slate-600 mb-6 flex-grow">Same as gumroad but you get the choice of sending me random donations with messages.</p>
+                    
+                    <div class="mt-auto">
+                        <button class="w-full bg-black text-white font-bold py-3 px-4 border-2 border-transparent hover:bg-white hover:text-black hover:border-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#29abe0]">
+                            VISIT KO-FI <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+            <!-- GUMROAD CARD -->
+            <a href="https://slushypie.gumroad.com/" target="_blank" class="bento-card tilt-r rounded-xl p-0 overflow-hidden flex flex-col group h-full">
+                <div class="bg-[#ff90e8] p-8 flex items-center justify-center border-b-3 border-black relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')]"></div>
+                    <i data-lucide="shopping-bag" class="w-24 h-24 text-black drop-shadow-[4px_4px_0px_#fff] group-hover:scale-110 transition-transform duration-300"></i>
+                </div>
+                <div class="p-6 flex flex-col flex-grow bg-white">
+                    <h2 class="text-2xl font-bold heading-font uppercase mb-2">Gumroad Store</h2>
+                    <p class="text-sm text-slate-600 mb-6 flex-grow">The same as Ko-fi but on Gumroad, Pick your poison.</p>
+                    
+                    <div class="mt-auto">
+                        <button class="w-full bg-black text-white font-bold py-3 px-4 border-2 border-transparent hover:bg-white hover:text-black hover:border-black transition-all flex items-center justify-center gap-2 shadow-[4px_4px_0px_0px_#ff90e8]">
+                            VISIT GUMROAD <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="mt-12 text-center">
+             <div class="inline-block p-4 border-2 border-black bg-yellow-100 rounded-lg -rotate-1">
+                <p class="font-bold text-xs uppercase flex items-center gap-2">
+                    <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                    All sales go towards funding absolutely nothing.
+                </p>
+             </div>
+        </div>
+
+        <div class="text-center mt-12 text-xs font-bold text-slate-500 uppercase tracking-widest">
+            &copy; © 2025 SlushyPie — totally a real corporation 
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            lucide.createIcons();
+
+            // Floating BG Logic (Copied from main page for consistency)
+            const bg = document.getElementById('bg-layer');
+            let mouse = { x: 0, y: 0 };
+            let current = { x: 0, y: 0 };
+            let animTime = 0; // Renamed 't' to 'animTime' and scoped inside IIFE
+
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
+                mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
+            });
+
+            const loop = () => {
+                animTime += 0.005;
+                
+                const targetX = Math.sin(animTime) * 15 + mouse.x;
+                const targetY = Math.sin(animTime * 0.8) * 10 + mouse.y;
+
+                current.x += (targetX - current.x) * 0.05;
+                current.y += (targetY - current.y) * 0.05;
+
+                if (bg) {
+                    bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
+                }
+                requestAnimationFrame(loop);
+            };
+
+            loop();
+        })();
+    </script>
+</body>
+</html>
