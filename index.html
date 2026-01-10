@@ -62,8 +62,6 @@
         <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
     </div>
 
-    <!-- SHOPPING CART BUTTON -->
-    <!-- Updated link to point to the shop folder -->
     <a href="shop/" class="fixed top-4 right-4 z-50 bg-yellow-300 border-[3px] border-black p-3 rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white transition-all cursor-pointer group" title="Visit Shop">
         <i data-lucide="shopping-cart" class="w-6 h-6 text-black group-hover:text-pink-500 transition-colors"></i>
     </a>
@@ -198,6 +196,19 @@
         </div>
     </main>
 
+    <div id="offline-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-4 border-[3px] border-black shadow-[6px_6px_0px_0px_#000] flex items-center gap-4 hidden z-[60] min-w-[300px]">
+        <div class="bg-pink-500 p-2 border-2 border-black shadow-[2px_2px_0px_0px_#000] text-white">
+            <i data-lucide="alert-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+            <h4 class="font-bold heading-font uppercase text-sm">Service Offline</h4>
+            <p class="font-mono text-[10px] font-bold text-slate-600">Redirected to home</p>
+        </div>
+        <button onclick="this.parentElement.classList.add('hidden')" class="ml-auto hover:text-pink-600">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-50">
         <i data-lucide="check-circle" class="w-6 h-6 text-pink-500"></i>
         <span class="font-bold font-mono">COPIED TO CLIPBOARD!</span>
@@ -207,7 +218,23 @@
         (function() {
             lucide.createIcons();
 
-            // Copy Logic
+            // 1. Offline Redirect Detection Logic
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('status') === 'offline') {
+                const offlineToast = document.getElementById('offline-toast');
+                offlineToast.classList.remove('hidden');
+                offlineToast.classList.add('toast-anim');
+                
+                // Clean URL so refresh doesn't trigger it again
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // Auto-hide after 8 seconds
+                setTimeout(() => {
+                    offlineToast.classList.add('hidden');
+                }, 8000);
+            }
+
+            // 2. Discord Copy Logic
             const discordCard = document.getElementById('discord-card');
             const toast = document.getElementById('toast');
             const DISCORD_ID = "slushypie";
@@ -222,7 +249,6 @@
             };
 
             discordCard.addEventListener('click', (e) => {
-                // Don't copy if clicking the actual link inside the card
                 if (e.target.tagName === 'A') return;
                 
                 navigator.clipboard.writeText(DISCORD_ID)
@@ -230,11 +256,11 @@
                     .catch(err => console.error("Clipboard failed:", err));
             });
 
-            // Floating BG Logic
+            // 3. Floating BG Logic
             const bg = document.getElementById('bg-layer');
             let mouse = { x: 0, y: 0 };
             let current = { x: 0, y: 0 };
-            let animTime = 0; // Renamed from t and scoped
+            let animTime = 0; 
 
             document.addEventListener('mousemove', (e) => {
                 mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
@@ -243,7 +269,6 @@
 
             const loop = () => {
                 animTime += 0.005;
-                
                 const targetX = Math.sin(animTime) * 15 + mouse.x;
                 const targetY = Math.sin(animTime * 0.8) * 10 + mouse.y;
 
