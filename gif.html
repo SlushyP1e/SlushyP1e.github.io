@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GIF Gallery | SlushyPie</title>
-    
+    <meta name="description" content="SlushyPie's collection of GIFs.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://slushyp1e.github.io/gif.html">
+    <meta property="og:title" content="GIF Gallery | SlushyPie">
+    <meta property="og:description" content="SlushyPie's collection of GIFs.">
+    <meta property="og:image" content="https://slushyp1e.github.io/SlushyPies.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://slushyp1e.github.io/gif.html">
+    <meta property="twitter:title" content="GIF Gallery | SlushyPie">
+    <meta property="twitter:description" content="SlushyPie's collection of GIFs.">
+    <meta property="twitter:image" content="https://slushyp1e.github.io/SlushyPies.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -25,7 +41,9 @@
             overflow-x: hidden;
         }
 
-        .heading-font { font-family: 'Fredoka', sans-serif; }
+        .heading-font {
+            font-family: 'Fredoka', sans-serif;
+        }
 
         /* Card Components */
         .gallery-card {
@@ -40,7 +58,7 @@
             transform: translate(2px, 2px);
             box-shadow: var(--shadow-hover);
         }
-        
+
         /* Interactive Buttons */
         .neo-btn {
             background-color: #fff;
@@ -48,78 +66,111 @@
             box-shadow: 4px 4px 0px 0px #000;
             transition: all 0.1s ease-in-out;
         }
+
         .neo-btn:hover {
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px 0px #000;
         }
+
         .neo-btn:active {
             transform: translate(4px, 4px);
             box-shadow: none;
         }
 
         /* Rotation Utilities */
-        .tilt-l { transform: rotate(-1deg); }
-        .tilt-r { transform: rotate(1deg); }
-        .tilt-l:hover, .tilt-r:hover { transform: rotate(0deg) translate(2px, 2px); }
+        .tilt-l {
+            transform: rotate(-1deg);
+        }
+
+        .tilt-r {
+            transform: rotate(1deg);
+        }
+
+        .tilt-l:hover,
+        .tilt-r:hover {
+            transform: rotate(0deg) translate(2px, 2px);
+        }
 
         /* Animations */
-        .toast-anim { animation: slideUp 0.3s ease-out forwards; }
-        
+        .toast-anim {
+            animation: slideUp 0.3s ease-out forwards;
+        }
+
         @keyframes slideUp {
-            from { opacity: 0; transform: translate(-50%, 20px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
         }
     </style>
 </head>
+
 <body class="min-h-screen text-slate-900 pb-10 relative">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover"
+            onerror="this.style.display='none'">
     </div>
 
     <main class="max-w-6xl mx-auto px-4 py-8 md:py-16">
-        
+
         <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-                <a href="index.html" class="neo-btn inline-flex items-center gap-2 text-xs font-bold text-black uppercase mb-4 px-3 py-1.5 rounded-lg bg-white hover:bg-pink-200">
+                <a href="index.html"
+                    class="neo-btn inline-flex items-center gap-2 text-xs font-bold text-black uppercase mb-4 px-3 py-1.5 rounded-lg bg-white hover:bg-pink-200">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
                 </a>
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight uppercase flex items-center gap-3 heading-font">
-                    <span class="text-pink-600 bg-white border-2 border-black px-2 shadow-[4px_4px_0px_0px_#000]">GIFS</span> Gallery
+                <h1
+                    class="text-4xl md:text-5xl font-bold tracking-tight uppercase flex items-center gap-3 heading-font">
+                    <span
+                        class="text-pink-600 bg-white border-2 border-black px-2 shadow-[4px_4px_0px_0px_#000]">GIFS</span>
+                    Gallery
                 </h1>
-                <p class="text-slate-700 mt-2 font-bold font-mono text-sm bg-white inline-block border-2 border-black px-2 py-1">
+                <p
+                    class="text-slate-700 mt-2 font-bold font-mono text-sm bg-white inline-block border-2 border-black px-2 py-1">
                     > My collection of gifs. Click to view and or copy.
                 </p>
             </div>
         </header>
 
         <div id="gif-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
+        </div>
 
         <div id="empty-state" class="hidden py-20 text-center gallery-card rounded-xl bg-white">
             <i data-lucide="film" class="w-16 h-16 text-slate-300 mx-auto mb-4"></i>
             <p class="text-lg font-bold font-mono text-slate-500">No GIFs found in the /gif folder yet!</p>
         </div>
-        
+
         <div class="text-center mt-16 text-xs font-bold text-slate-500 uppercase tracking-widest">
-            &copy; 2025 SlushyPie — totally a real corporation
+            &copy; <span id="year">2025</span> SlushyPie — totally a real corporation
         </div>
     </main>
 
     <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" aria-hidden="true">
-        <div id="modal-backdrop" class="absolute inset-0 bg-pink-900/80 backdrop-blur-sm transition-opacity opacity-0"></div>
-        
-        <div id="modal-content" class="relative w-full max-w-5xl z-10 opacity-0 transform scale-95 transition-all duration-200">
-            <button id="close-modal-btn" class="absolute -top-6 -right-2 md:-right-6 md:-top-10 text-white hover:text-pink-300 transition-colors bg-black border-2 border-white rounded-full p-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-1 hover:shadow-none">
+        <div id="modal-backdrop" class="absolute inset-0 bg-pink-900/80 backdrop-blur-sm transition-opacity opacity-0">
+        </div>
+
+        <div id="modal-content"
+            class="relative w-full max-w-5xl z-10 opacity-0 transform scale-95 transition-all duration-200">
+            <button id="close-modal-btn"
+                class="absolute -top-6 -right-2 md:-right-6 md:-top-10 text-white hover:text-pink-300 transition-colors bg-black border-2 border-white rounded-full p-1 shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:translate-y-1 hover:shadow-none">
                 <i data-lucide="x" class="w-8 h-8"></i>
             </button>
-            <div class="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] rounded-xl overflow-hidden flex items-center justify-center p-2">
-                <img id="modal-img" src="" alt="" class="max-h-[85vh] w-auto rounded-lg object-contain border-2 border-slate-200" />
+            <div
+                class="bg-white border-4 border-black shadow-[8px_8px_0px_0px_#000] rounded-xl overflow-hidden flex items-center justify-center p-2">
+                <img id="modal-img" src="" alt=""
+                    class="max-h-[85vh] w-auto rounded-lg object-contain border-2 border-slate-200" />
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-[60]">
+    <div id="toast"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-[60]">
         <i data-lucide="check-circle" class="w-6 h-6 text-pink-500"></i>
         <span class="font-bold font-mono">LINK COPIED!</span>
     </div>
@@ -127,14 +178,14 @@
     <script>
         // --- Configuration ---
         const GIF_FILES = [
-          'slushypie-vrchat.gif',
-          'slushypie-eat.gif',
-          'MyHonestReaction.gif',
-          'SlushyPieMyBeloved.gif',
+            'slushypie-vrchat.gif',
+            'slushypie-eat.gif',
+            'MyHonestReaction.gif',
+            'SlushyPieMyBeloved.gif',
         ];
-        
+
         const BASE_URL = window.location.origin + '/gif/';
-        
+
         // --- DOM Elements ---
         const els = {
             grid: document.getElementById('gif-grid'),
@@ -149,7 +200,7 @@
         };
 
         // --- Core Logic ---
-        
+
         const init = () => {
             lucide.createIcons();
             renderGrid();
@@ -163,13 +214,13 @@
             GIF_FILES.forEach((filename, i) => {
                 const url = BASE_URL + filename;
                 const rotateClass = i % 2 === 0 ? 'tilt-l' : 'tilt-r';
-                
+
                 const card = document.createElement('div');
                 card.className = `gallery-card ${rotateClass} rounded-xl overflow-hidden group flex flex-col bg-white`;
-                
+
                 card.innerHTML = `
                     <div class="relative cursor-pointer overflow-hidden aspect-video bg-slate-100 border-b-3 border-black js-view-trigger" data-url="${url}" data-name="${filename}">
-                        <img src="${url}" alt="${filename}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <img src="${url}" alt="${filename}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                             <div class="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] rounded-full p-2 text-black transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                                 <i data-lucide="maximize-2" class="w-6 h-6"></i>
@@ -187,10 +238,10 @@
                         </button>
                     </div>
                 `;
-                
+
                 els.grid.appendChild(card);
             });
-            
+
             // Re-run icons for dynamic content
             lucide.createIcons();
         };
@@ -276,7 +327,7 @@
 
         const animLoop = () => {
             t += 0.005;
-            
+
             const targetX = Math.sin(t) * 15 + mouse.x;
             const targetY = Math.sin(t * 0.8) * 10 + mouse.y;
 
@@ -290,8 +341,13 @@
         };
 
         // Start
-        window.addEventListener('load', init);
+        window.addEventListener('load', () => {
+            init();
+            // Dynamic Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
 
     </script>
 </body>
+
 </html>
