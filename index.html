@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SlushyPie | Landing Page</title>
-    
+    <meta name="description" content="SlushyPie's personal landing page. VRChat, Resonite, and chill vibes.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://slushyp1e.github.io/">
+    <meta property="og:title" content="SlushyPie | Landing Page">
+    <meta property="og:description" content="SlushyPie's personal landing page. VRChat, Resonite, and chill vibes.">
+    <meta property="og:image" content="https://slushyp1e.github.io/SlushyPies.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://slushyp1e.github.io/">
+    <meta property="twitter:title" content="SlushyPie | Landing Page">
+    <meta property="twitter:description"
+        content="SlushyPie's personal landing page. VRChat, Resonite, and chill vibes.">
+    <meta property="twitter:image" content="https://slushyp1e.github.io/SlushyPies.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -24,7 +41,9 @@
             overflow-x: hidden;
         }
 
-        .heading-font { font-family: 'Fredoka', sans-serif; }
+        .heading-font {
+            font-family: 'Fredoka', sans-serif;
+        }
 
         /* Custom Card Styles */
         .bento-card {
@@ -41,17 +60,33 @@
         }
 
         /* Tilt utilities */
-        .tilt-l { transform: rotate(-1deg); }
-        .tilt-r { transform: rotate(1deg); }
-        .tilt-l:hover, .tilt-r:hover { transform: rotate(0deg) translate(2px, 2px); }
+        .tilt-l {
+            transform: rotate(-1deg);
+        }
+
+        .tilt-r {
+            transform: rotate(1deg);
+        }
+
+        .tilt-l:hover,
+        .tilt-r:hover {
+            transform: rotate(0deg) translate(2px, 2px);
+        }
 
         .toast-anim {
             animation: slideUp 0.3s ease-out forwards;
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translate(-50%, 20px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
         }
     </style>
 </head>
@@ -59,38 +94,67 @@
 <body class="min-h-screen text-slate-900 selection:bg-black selection:text-pink-300 pb-10 relative">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover"
+            onerror="this.style.display='none'">
     </div>
 
-    <a href="shop/" class="fixed top-4 right-4 z-50 bg-yellow-300 border-[3px] border-black p-3 rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white transition-all cursor-pointer group" title="Visit Shop">
+    <a href="shop/" aria-label="Visit Shop"
+        class="fixed top-4 right-4 z-50 bg-yellow-300 border-[3px] border-black p-3 rounded-full shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-white transition-all cursor-pointer group"
+        title="Visit Shop">
         <i data-lucide="shopping-cart" class="w-6 h-6 text-black group-hover:text-pink-500 transition-colors"></i>
     </a>
 
     <main class="max-w-6xl mx-auto px-4 py-8 md:py-16">
-        
+
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            
-            <div class="bento-card tilt-l rounded-xl p-8 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                <div class="relative shrink-0">
-                    <img src="SlushyPies.png" alt="SlushyPie" class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                    <div class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 border-2 border-black" title="Online"></div>
+
+            <!-- Dynamic Status Card -->
+            <div id="status-card"
+                class="hidden md:col-span-4 bento-card rounded-xl p-4 bg-lime-300 border-2 border-black items-center gap-4">
+                <div class="bg-black/10 p-2 rounded-full border-2 border-black relative">
+                    <div class="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-75"></div>
+                    <i data-lucide="radio" class="w-6 h-6 text-black relative z-10"></i>
                 </div>
-                
+                <div>
+                    <h3 class="font-bold heading-font uppercase text-xs tracking-widest mb-1">Live Status</h3>
+                    <p id="status-message" class="font-mono text-sm font-bold text-slate-900">...</p>
+                    <p id="status-time" class="text-[10px] font-bold text-slate-600 uppercase mt-1"></p>
+                </div>
+            </div>
+
+            <div
+                class="bento-card tilt-l rounded-xl p-8 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div class="relative shrink-0">
+                    <img src="SlushyPies.png" alt="SlushyPie"
+                        class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 border-2 border-black" title="Online">
+                    </div>
+                </div>
+
                 <div class="text-center sm:text-left z-10 w-full">
                     <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2 uppercase heading-font">SlushyPie</h1>
-                    <p class="text-sm font-bold bg-black text-white inline-block px-2 py-1 mb-4 -skew-x-6">NERD BULLY & GAMER</p>
+                    <p class="text-sm font-bold bg-black text-white inline-block px-2 py-1 mb-4 -skew-x-6">NERD BULLY &
+                        GAMER</p>
                     <div class="flex flex-wrap justify-center sm:justify-start gap-2">
-                        <span class="px-3 py-1 border-2 border-black bg-pink-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">VRChat</span>
-                        <span class="px-3 py-1 border-2 border-black bg-purple-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">Resonite</span>
-                        <span class="px-3 py-1 border-2 border-black bg-yellow-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">Aussie</span>
+                        <span
+                            class="px-3 py-1 border-2 border-black bg-pink-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">VRChat</span>
+                        <span
+                            class="px-3 py-1 border-2 border-black bg-purple-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">Resonite</span>
+                        <span
+                            class="px-3 py-1 border-2 border-black bg-yellow-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default flex items-center gap-2">
+                            Aussie <span id="local-time"
+                                class="bg-black text-white px-1 font-mono text-[10px]">--:--</span>
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div id="discord-card" class="bento-card tilt-r rounded-xl p-6 md:col-span-2 flex flex-col justify-center cursor-pointer bg-indigo-50">
+            <div id="discord-card"
+                class="bento-card tilt-r rounded-xl p-6 md:col-span-2 flex flex-col justify-center cursor-pointer bg-indigo-50">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-3">
-                        <div class="bg-[#5865F2] p-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white">
+                        <div
+                            class="bg-[#5865F2] p-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white">
                             <i data-lucide="message-circle" class="w-6 h-6"></i>
                         </div>
                         <div>
@@ -100,27 +164,37 @@
                     </div>
                     <i data-lucide="copy" class="text-black w-5 h-5"></i>
                 </div>
-                
+
                 <div class="bg-white p-3 border-2 border-black flex justify-between items-center mb-4">
                     <span class="font-bold text-lg select-all">@slushypie</span>
                     <span class="text-[10px] font-bold bg-black text-white px-2 py-1">COPY</span>
                 </div>
                 <div class="space-y-2 text-xs font-bold text-slate-600">
-                    <p class="italic bg-yellow-200 inline px-1 border border-black border-dashed">⚠️There is no guarantee I accept</p>
-                    <p class="mt-2">Find me in: <a href="https://discord.com/invite/AF2m2uh" class="underline hover:bg-black hover:text-white px-1 transition-all" target="_blank" rel="noopener">The Black Cat Discord Server</a></p>
+                    <p class="italic bg-yellow-200 inline px-1 border border-black border-dashed">⚠️There is no
+                        guarantee I accept</p>
+                    <p class="mt-2">Find me in: <a href="https://discord.com/invite/AF2m2uh"
+                            class="underline hover:bg-black hover:text-white px-1 transition-all" target="_blank"
+                            rel="noopener noreferrer">The Black Cat Discord Server</a></p>
                 </div>
             </div>
 
             <div class="bento-card rounded-xl p-6 md:col-span-3 bg-white">
-                <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 heading-font uppercase border-b-4 border-pink-300 inline-block w-full">About Me</h2>
+                <h2
+                    class="text-2xl font-bold mb-4 flex items-center gap-2 heading-font uppercase border-b-4 border-pink-300 inline-block w-full">
+                    About Me</h2>
                 <div class="prose font-mono text-sm md:text-base leading-relaxed text-slate-800">
                     <p class="mb-4">
-                        Hey! I'm <strong>SlushyPie</strong>. Most of the time I'm hanging out in VRChat or Resonite (usually Black Cat, this is not an ad, maybe it is, you will never know). <strike>I'm not a "content creator,"</strike> I kinda am, sometimes I make free stuff sometimes not... I'm just a person vibing, hanging out, not really doing much to be honest, sometimes being mean to people, 100% abusing my powers.
+                        Hey! I'm <strong>SlushyPie</strong>. Most of the time I'm hanging out in VRChat or Resonite
+                        (usually Black Cat, this is not an ad, maybe it is, you will never know). <strike>I'm not a
+                            "content creator,"</strike> I kinda am, sometimes I make free stuff sometimes not... I'm
+                        just a person vibing, hanging out, not really doing much to be honest, sometimes being mean to
+                        people, 100% abusing my powers.
                         I’m running on 100% certified tuna‑strawberry logic™
                     </p>
                     <p class="group p-4 border-2 border-black bg-slate-100 italic relative">
-                        <span class="hover absolute -top-3 left-4 bg-white px-2 font-bold text-xs border border-black">QUOTE</span>
-                        <span class="hidden group-hover:inline">"so a fish walked into a bar..."</span> 
+                        <span
+                            class="hover absolute -top-3 left-4 bg-white px-2 font-bold text-xs border border-black">QUOTE</span>
+                        <span class="hidden group-hover:inline">"so a fish walked into a bar..."</span>
                         <strong class="group-hover:hidden">YOU HAVE TO UNLOCK THIS QUOTE!</strong>
                     </p>
                 </div>
@@ -137,19 +211,23 @@
             </div>
 
             <div class="md:col-span-2 grid grid-cols-2 gap-4">
-                <a href="https://www.tiktok.com/@slushypievrc" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white group">
+                <a href="https://www.tiktok.com/@slushypievrc" target="_blank" rel="noopener noreferrer"
+                    class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white group">
                     <i data-lucide="music-2" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">TikTok</span>
                 </a>
-                <a href="https://www.youtube.com/@slushypievrc" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-red-600 hover:text-white group">
+                <a href="https://www.youtube.com/@slushypievrc" target="_blank" rel="noopener noreferrer"
+                    class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-red-600 hover:text-white group">
                     <i data-lucide="youtube" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">YouTube</span>
                 </a>
-                <a href="https://steamcommunity.com/id/slushypie" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#1b2838] hover:text-white group">
+                <a href="https://steamcommunity.com/id/slushypie" target="_blank" rel="noopener noreferrer"
+                    class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#1b2838] hover:text-white group">
                     <i data-lucide="gamepad-2" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">Steam</span>
                 </a>
-                <a href="https://ko-fi.com/slushypie" target="_blank" class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#29abe0] hover:text-white group">
+                <a href="https://ko-fi.com/slushypie" target="_blank" rel="noopener noreferrer"
+                    class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-[#29abe0] hover:text-white group">
                     <i data-lucide="coffee" class="w-8 h-8"></i>
                     <span class="font-bold uppercase">Support Me</span>
                 </a>
@@ -160,44 +238,58 @@
                     <i data-lucide="joystick" class="w-6 h-6"></i> MAIN GAMES
                 </h3>
                 <div class="grid grid-cols-2 gap-4 h-32">
-                    <a href="https://hello.vrchat.com/" target="_blank" class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
-                        <img src="VRC_Logo.png" class="h-16 w-auto object-contain group-hover:scale-110 transition-transform" alt="VRChat" onerror="this.style.display='none'">
+                    <a href="https://hello.vrchat.com/" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
+                        <img src="VRC_Logo.png"
+                            class="h-16 w-auto object-contain group-hover:scale-110 transition-transform" alt="VRChat"
+                            loading="lazy" onerror="this.style.display='none'">
                     </a>
-                    <a href="https://resonite.com/" target="_blank" class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
-                        <img src="resonitelogo.png" class="h-12 w-auto object-contain group-hover:scale-110 transition-transform" alt="Resonite" onerror="this.style.display='none'">
+                    <a href="https://resonite.com/" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
+                        <img src="resonitelogo.png"
+                            class="h-12 w-auto object-contain group-hover:scale-110 transition-transform" alt="Resonite"
+                            loading="lazy" onerror="this.style.display='none'">
                     </a>
                 </div>
             </div>
 
             <div class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="gif.html" class="bento-card tilt-l rounded-xl p-4 flex items-center justify-between hover:bg-purple-200 group">
+                <a href="gif.html"
+                    class="bento-card tilt-l rounded-xl p-4 flex items-center justify-between hover:bg-purple-200 group">
                     <div class="flex items-center gap-4">
-                        <div class="p-3 bg-purple-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <div
+                            class="p-3 bg-purple-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             <i data-lucide="film" class="w-6 h-6"></i>
                         </div>
                         <div>
                             <span class="font-bold block text-lg uppercase heading-font">GIF Gallery</span>
-                            <span class="text-xs font-bold text-slate-600 bg-white px-1 border border-black">MY GIFS</span>
+                            <span class="text-xs font-bold text-slate-600 bg-white px-1 border border-black">MY
+                                GIFS</span>
                         </div>
                     </div>
-                    <i data-lucide="arrow-right" class="border-2 border-black rounded-full p-1 w-8 h-8 group-hover:bg-black group-hover:text-white transition-colors"></i>
+                    <i data-lucide="arrow-right"
+                        class="border-2 border-black rounded-full p-1 w-8 h-8 group-hover:bg-black group-hover:text-white transition-colors"></i>
                 </a>
 
-                 <a href="https://vrchat.com/home/user/usr_8a525779-3622-4f25-89d9-c15404516391" target="_blank" class="bento-card tilt-r rounded-xl p-4 flex items-center gap-4 hover:bg-pink-200 group">
-                    <div class="p-3 bg-pink-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <a href="https://vrchat.com/home/user/usr_8a525779-3622-4f25-89d9-c15404516391" target="_blank"
+                    rel="noopener noreferrer"
+                    class="bento-card tilt-r rounded-xl p-4 flex items-center gap-4 hover:bg-pink-200 group">
+                    <div
+                        class="p-3 bg-pink-500 border-2 border-black text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                         <i data-lucide="user-check" class="w-6 h-6"></i>
                     </div>
                     <span class="font-bold text-lg uppercase heading-font">VRChat Profile</span>
                 </a>
             </div>
-            
+
             <div class="md:col-span-4 text-center mt-8 text-xs font-bold text-slate-500 uppercase tracking-widest">
-                &copy; 2025 SlushyPie — totally a real corporation
+                &copy; <span id="year">2025</span> SlushyPie — totally a real corporation
             </div>
         </div>
     </main>
 
-    <div id="offline-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-4 border-[3px] border-black shadow-[6px_6px_0px_0px_#000] flex items-center gap-4 hidden z-[60] min-w-[300px]">
+    <div id="offline-toast"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-white text-black px-6 py-4 border-[3px] border-black shadow-[6px_6px_0px_0px_#000] flex items-center gap-4 hidden z-[60] min-w-[300px]">
         <div class="bg-pink-500 p-2 border-2 border-black shadow-[2px_2px_0px_0px_#000] text-white">
             <i data-lucide="alert-circle" class="w-6 h-6"></i>
         </div>
@@ -210,13 +302,14 @@
         </button>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-50">
+    <div id="toast"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-4 border-2 border-pink-500 shadow-[4px_4px_0px_0px_#ec4899] flex items-center gap-3 hidden z-50">
         <i data-lucide="check-circle" class="w-6 h-6 text-pink-500"></i>
         <span class="font-bold font-mono">COPIED TO CLIPBOARD!</span>
     </div>
 
     <script>
-        (function() {
+        (function () {
             lucide.createIcons();
 
             // 1. Offline Redirect Detection Logic
@@ -225,10 +318,10 @@
                 const offlineToast = document.getElementById('offline-toast');
                 offlineToast.classList.remove('hidden');
                 offlineToast.classList.add('toast-anim');
-                
+
                 // Clean URL so refresh doesn't trigger it again
                 window.history.replaceState({}, document.title, window.location.pathname);
-                
+
                 // Auto-hide after 8 seconds
                 setTimeout(() => {
                     offlineToast.classList.add('hidden');
@@ -251,7 +344,7 @@
 
             discordCard.addEventListener('click', (e) => {
                 if (e.target.tagName === 'A') return;
-                
+
                 navigator.clipboard.writeText(DISCORD_ID)
                     .then(showToast)
                     .catch(err => console.error("Clipboard failed:", err));
@@ -261,7 +354,7 @@
             const bg = document.getElementById('bg-layer');
             let mouse = { x: 0, y: 0 };
             let current = { x: 0, y: 0 };
-            let animTime = 0; 
+            let animTime = 0;
 
             document.addEventListener('mousemove', (e) => {
                 mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
@@ -284,6 +377,48 @@
 
             loop();
         })();
+        // 4. Dynamic Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 5. Live Local Time (Australia/Sydney)
+        const timeEl = document.getElementById('local-time');
+        const updateTime = () => {
+            const now = new Date();
+            // Using 'en-AU' and 'Australia/Sydney' (or closest major city)
+            const options = {
+                timeZone: 'Australia/Sydney',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            timeEl.textContent = now.toLocaleTimeString('en-AU', options);
+        };
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+
+        // 6. Dynamic Status Fetch
+        const list_ts = Date.now(); // Define list_ts for cache busting
+        fetch('status.json?t=' + list_ts) // preventative cache busting
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.active) {
+                    const card = document.getElementById('status-card');
+                    const msg = document.getElementById('status-message');
+                    const time = document.getElementById('status-time');
+
+                    card.classList.remove('hidden');
+                    card.classList.add('flex'); // Switch from hidden to flex
+                    msg.textContent = data.message;
+
+                    if (data.timestamp) {
+                        const date = new Date(data.timestamp);
+                        const ago = Math.floor((new Date() - date) / 60000);
+                        time.textContent = `Updated ${ago} mins ago`;
+                    }
+                }
+            })
+            .catch(err => console.log('No status update found'));
     </script>
 </body>
+
 </html>
