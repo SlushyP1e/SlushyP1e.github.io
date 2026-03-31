@@ -44,14 +44,144 @@
         .tilt-l { transform: rotate(-1deg); }
         .tilt-r { transform: rotate(1deg); }
         .tilt-l:hover, .tilt-r:hover { transform: rotate(0deg) translate(2px, 2px); }
+
+        /* --- HOVER TIMER STYLES --- */
+
+        /* Progress bar track — sits at the very bottom of the card */
+        .gumroad-progress-track {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #f3d0f7;
+            border-top: 2px solid #000;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+
+        .gumroad-card:hover .gumroad-progress-track {
+            opacity: 1;
+        }
+
+        .gumroad-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: repeating-linear-gradient(
+                90deg,
+                #ff90e8 0px,
+                #ff90e8 10px,
+                #000 10px,
+                #000 12px
+            );
+            transition: width linear; /* duration set via JS */
+        }
+
+        /* Countdown badge that appears on hover */
+        .gumroad-countdown {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #000;
+            color: #ff90e8;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border: 2px solid #ff90e8;
+            border-radius: 999px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            z-index: 20;
+            white-space: nowrap;
+        }
+
+        .gumroad-card:hover .gumroad-countdown {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* The gif overlay that pops up after 3 seconds */
+        .gif-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.75);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .gif-overlay.visible {
+            display: flex;
+        }
+
+        .gif-overlay img {
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px 0px #ff90e8;
+            max-width: 90vw;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+            animation: gif-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes gif-pop {
+            from { transform: scale(0.5) rotate(-6deg); opacity: 0; }
+            to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+        }
+
+        .gif-overlay-label {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            background: #ff90e8;
+            border: 3px solid #000;
+            padding: 6px 20px;
+            box-shadow: 4px 4px 0 #000;
+            border-radius: 8px;
+            transform: rotate(-2deg);
+        }
+
+        .gif-overlay-close {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: 2px solid #fff;
+            padding: 6px 14px;
+            border-radius: 999px;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+
+        .gif-overlay-close:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body class="min-h-screen text-slate-900 pb-10 relative flex flex-col items-center">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <!-- Added ../ to jump out of the 'shop' folder and find the image in root -->
         <img id="bg-layer" src="../SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+    </div>
+
+    <!-- GIF OVERLAY -->
+    <div id="gif-overlay" class="gif-overlay" role="dialog" aria-label="surprise gif">
+        <div class="gif-overlay-label">u stayed too long 👀</div>
+        <img id="gif-img" src="../gifs/dap.gif" alt="dap gif" />
+        <button class="gif-overlay-close" id="gif-close">click anywhere to close</button>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -59,7 +189,6 @@
         
         <!-- Header & Back Button -->
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
-            <!-- Added ../ to jump out of the 'shop' folder and find index.html in root -->
             <a href="../index.html" class="bento-card bg-white px-4 py-2 rounded-full flex items-center gap-2 font-bold hover:bg-black hover:text-white group transition-colors">
                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
                 <span>BACK TO HOME</span>
@@ -92,8 +221,15 @@
                 </div>
             </a>
 
-            <!-- GUMROAD CARD -->
-            <a href="https://slushypie.gumroad.com/" target="_blank" class="bento-card tilt-r rounded-xl p-0 overflow-hidden flex flex-col group h-full">
+            <!-- GUMROAD CARD — with hover timer -->
+            <a id="gumroad-card"
+               href="https://slushypie.gumroad.com/"
+               target="_blank"
+               class="bento-card tilt-r rounded-xl p-0 overflow-hidden flex flex-col group h-full gumroad-card">
+
+                <!-- Countdown badge -->
+                <div class="gumroad-countdown" id="gumroad-countdown">3s...</div>
+
                 <div class="bg-[#ff90e8] p-8 flex items-center justify-center border-b-3 border-black relative overflow-hidden">
                     <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')]"></div>
                     <i data-lucide="shopping-bag" class="w-24 h-24 text-black drop-shadow-[4px_4px_0px_#fff] group-hover:scale-110 transition-transform duration-300"></i>
@@ -107,6 +243,11 @@
                             VISIT GUMROAD <i data-lucide="external-link" class="w-4 h-4"></i>
                         </button>
                     </div>
+                </div>
+
+                <!-- Progress bar track (sits at absolute bottom of card) -->
+                <div class="gumroad-progress-track">
+                    <div class="gumroad-progress-fill" id="gumroad-progress-fill"></div>
                 </div>
             </a>
 
@@ -130,11 +271,11 @@
         (function() {
             lucide.createIcons();
 
-            // Floating BG Logic (Copied from main page for consistency)
+            // ── Background float logic ──────────────────────────────────────
             const bg = document.getElementById('bg-layer');
             let mouse = { x: 0, y: 0 };
             let current = { x: 0, y: 0 };
-            let animTime = 0; // Renamed 't' to 'animTime' and scoped inside IIFE
+            let animTime = 0;
 
             document.addEventListener('mousemove', (e) => {
                 mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
@@ -143,20 +284,85 @@
 
             const loop = () => {
                 animTime += 0.005;
-                
                 const targetX = Math.sin(animTime) * 15 + mouse.x;
                 const targetY = Math.sin(animTime * 0.8) * 10 + mouse.y;
-
                 current.x += (targetX - current.x) * 0.05;
                 current.y += (targetY - current.y) * 0.05;
-
-                if (bg) {
-                    bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
-                }
+                if (bg) bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
                 requestAnimationFrame(loop);
             };
-
             loop();
+
+            // ── Gumroad hover timer ─────────────────────────────────────────
+            const HOVER_DURATION = 3000; // ms
+            const card       = document.getElementById('gumroad-card');
+            const fill       = document.getElementById('gumroad-progress-fill');
+            const badge      = document.getElementById('gumroad-countdown');
+            const overlay    = document.getElementById('gif-overlay');
+            const closeBtn   = document.getElementById('gif-close');
+
+            let hoverStart   = null;
+            let rafId        = null;
+            let fired        = false; // only show once per page load (reset on leave)
+
+            function startTimer() {
+                if (fired) return;
+                hoverStart = performance.now();
+
+                // Kick off smooth CSS fill
+                fill.style.transition = `width ${HOVER_DURATION}ms linear`;
+                fill.style.width = '100%';
+
+                // Tick: update badge text
+                function tick(now) {
+                    const elapsed = now - hoverStart;
+                    const remaining = Math.max(0, HOVER_DURATION - elapsed);
+                    const secs = Math.ceil(remaining / 1000);
+
+                    badge.textContent = remaining > 0 ? `${secs}s...` : '🎉';
+
+                    if (elapsed >= HOVER_DURATION) {
+                        showGif();
+                        return;
+                    }
+                    rafId = requestAnimationFrame(tick);
+                }
+                rafId = requestAnimationFrame(tick);
+            }
+
+            function stopTimer() {
+                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                hoverStart = null;
+
+                // Snap progress bar back instantly
+                fill.style.transition = 'width 0.3s ease';
+                fill.style.width = '0%';
+
+                badge.textContent = '3s...';
+                fired = false; // allow re-trigger on next hover
+            }
+
+            function showGif() {
+                fired = true;
+                overlay.classList.add('visible');
+                // Prevent the card link from firing
+                card.addEventListener('click', blockClick, { once: true });
+            }
+
+            function blockClick(e) { e.preventDefault(); }
+
+            function hideGif() {
+                overlay.classList.remove('visible');
+                stopTimer();
+            }
+
+            card.addEventListener('mouseenter', startTimer);
+            card.addEventListener('mouseleave', () => {
+                if (!fired) stopTimer();
+            });
+
+            overlay.addEventListener('click', hideGif);
+            closeBtn.addEventListener('click', hideGif);
         })();
     </script>
 </body>
