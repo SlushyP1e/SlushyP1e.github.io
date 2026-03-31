@@ -267,103 +267,130 @@
         </div>
     </main>
 
-    <script>
-        (function() {
-            lucide.createIcons();
+<script>
+(function() {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
-            // ── Background float logic ──────────────────────────────────────
-            const bg = document.getElementById('bg-layer');
-            let mouse = { x: 0, y: 0 };
-            let current = { x: 0, y: 0 };
-            let animTime = 0;
+    // ── Background float logic ──────────────────────────────────
+    const bg = document.getElementById('bg-layer');
+    let mouse = { x: 0, y: 0 };
+    let current = { x: 0, y: 0 };
+    let animTime = 0;
 
-            document.addEventListener('mousemove', (e) => {
-                mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
-                mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
-            });
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
+        mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
+    });
 
-            const loop = () => {
-                animTime += 0.005;
-                const targetX = Math.sin(animTime) * 15 + mouse.x;
-                const targetY = Math.sin(animTime * 0.8) * 10 + mouse.y;
-                current.x += (targetX - current.x) * 0.05;
-                current.y += (targetY - current.y) * 0.05;
-                if (bg) bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
-                requestAnimationFrame(loop);
-            };
-            loop();
+    const loop = () => {
+        animTime += 0.005;
+        const targetX = Math.sin(animTime) * 15 + mouse.x;
+        const targetY = Math.sin(animTime * 0.8) * 10 + mouse.y;
+        current.x += (targetX - current.x) * 0.05;
+        current.y += (targetY - current.y) * 0.05;
+        if (bg) bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
+        requestAnimationFrame(loop);
+    };
+    loop();
 
-            // ── Gumroad hover timer ─────────────────────────────────────────
-            const HOVER_DURATION = 3000; // ms
-            const card       = document.getElementById('gumroad-card');
-            const fill       = document.getElementById('gumroad-progress-fill');
-            const badge      = document.getElementById('gumroad-countdown');
-            const overlay    = document.getElementById('gif-overlay');
-            const closeBtn   = document.getElementById('gif-close');
+    // ── Gumroad hover/hold timer ─────────────────────────────────
+    const HOVER_DURATION = 3000;
+    const card    = document.getElementById('gumroad-card');
+    const fill    = document.getElementById('gumroad-progress-fill');
+    const badge   = document.getElementById('gumroad-countdown');
+    const overlay = document.getElementById('gif-overlay');
+    const closeBtn = document.getElementById('gif-close');
 
-            let hoverStart   = null;
-            let rafId        = null;
-            let fired        = false; // only show once per page load (reset on leave)
+    let hoverStart = null;
+    let rafId = null;
+    let gifWasShown = false; // tracks if gif fired THIS press/hover
 
-            function startTimer() {
-                if (fired) return;
-                hoverStart = performance.now();
+    function startTimer() {
+        if (gifWasShown) return;
+        hoverStart = performance.now();
+        fill.style.transition = `width ${HOVER_DURATION}ms linear`;
+        fill.style.width = '100%';
 
-                // Kick off smooth CSS fill
-                fill.style.transition = `width ${HOVER_DURATION}ms linear`;
-                fill.style.width = '100%';
-
-                // Tick: update badge text
-                function tick(now) {
-                    const elapsed = now - hoverStart;
-                    const remaining = Math.max(0, HOVER_DURATION - elapsed);
-                    const secs = Math.ceil(remaining / 1000);
-
-                    badge.textContent = remaining > 0 ? `${secs}s...` : '🎉';
-
-                    if (elapsed >= HOVER_DURATION) {
-                        showGif();
-                        return;
-                    }
-                    rafId = requestAnimationFrame(tick);
-                }
-                rafId = requestAnimationFrame(tick);
+        function tick(now) {
+            const elapsed = now - hoverStart;
+            const remaining = Math.max(0, HOVER_DURATION - elapsed);
+            badge.textContent = remaining > 0 ? `${Math.ceil(remaining / 1000)}s...` : '🎉';
+            if (elapsed >= HOVER_DURATION) {
+                showGif();
+                return;
             }
+            rafId = requestAnimationFrame(tick);
+        }
+        rafId = requestAnimationFrame(tick);
+    }
 
-            function stopTimer() {
-                if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-                hoverStart = null;
+    function stopTimer() {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        hoverStart = null;
+        fill.style.transition = 'width 0.3s ease';
+        fill.style.width = '0%';
+        badge.textContent = '3s...';
+    }
 
-                // Snap progress bar back instantly
-                fill.style.transition = 'width 0.3s ease';
-                fill.style.width = '0%';
+    function resetAll() {
+        gifWasShown = false;
+        stopTimer();
+    }
 
-                badge.textContent = '3s...';
-                fired = false; // allow re-trigger on next hover
-            }
+    function showGif() {
+        gifWasShown = true;
+        stopTimer();
+        overlay.classList.add('visible');
+    }
 
-            function showGif() {
-                fired = true;
-                overlay.classList.add('visible');
-                // Prevent the card link from firing
-                card.addEventListener('click', blockClick, { once: true });
-            }
+    function hideGif() {
+        overlay.classList.remove('visible');
+        resetAll();
+    }
 
-            function blockClick(e) { e.preventDefault(); }
+    // ── Desktop (mouse) ──
+    card.addEventListener('mouseenter', startTimer);
+    card.addEventListener('mouseleave', () => {
+        if (!gifWasShown) stopTimer();
+    });
 
-            function hideGif() {
-                overlay.classList.remove('visible');
-                stopTimer();
-            }
+    // Block click only when gif fired via mouse
+    card.addEventListener('click', (e) => {
+        if (gifWasShown) e.preventDefault();
+    });
 
-            card.addEventListener('mouseenter', startTimer);
-            card.addEventListener('mouseleave', () => {
-                if (!fired) stopTimer();
-            });
+    // ── Mobile (touch) ──
+    card.addEventListener('touchstart', (e) => {
+        resetAll(); // always start fresh on new touch
+        startTimer();
+    }, { passive: true });
 
-            overlay.addEventListener('click', hideGif);
-            closeBtn.addEventListener('click', hideGif);
-        })();
-    </script>
+    card.addEventListener('touchend', (e) => {
+        if (gifWasShown) {
+            // gif fired — block the tap-as-click navigation
+            e.preventDefault();
+        } else {
+            // normal quick tap — stop timer, let link open
+            stopTimer();
+        }
+    });
+
+    card.addEventListener('touchcancel', () => {
+        stopTimer();
+        gifWasShown = false;
+    });
+
+    // ── Reset when returning to page (tab switch / back navigation) ──
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') resetAll();
+    });
+
+    window.addEventListener('pageshow', () => resetAll());
+
+    // ── Overlay close ──
+    overlay.addEventListener('click', hideGif);
+    closeBtn.addEventListener('click', hideGif);
+})();
+</script>
 </body>
 </html>
