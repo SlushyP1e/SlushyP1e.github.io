@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SlushyPie | Shop</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap&display=swap">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
             --shadow: 6px 6px 0px 0px #000;
@@ -174,13 +175,13 @@
 <body class="min-h-screen text-slate-900 pb-10 relative flex flex-col items-center">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <img id="bg-layer" src="../SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover" onerror="this.style.display='none'">
+        <img id="bg-layer" src="../SlushyPieBannerTransparent.webp" alt="" class="w-[110%] h-[110%] object-cover" loading="lazy" onerror="this.src='../SlushyPieBannerTransparent.png'">
     </div>
 
     <!-- GIF OVERLAY -->
     <div id="gif-overlay" class="gif-overlay" role="dialog" aria-label="surprise gif">
         <div class="gif-overlay-label">u stayed too long 👀</div>
-        <img id="gif-img" src="../gif/dap.gif" alt="dap gif" />
+        <img id="gif-img" src="" data-src="../gif/dap.gif" alt="dap gif" />
         <button class="gif-overlay-close" id="gif-close">click anywhere to close</button>
     </div>
 
@@ -340,6 +341,11 @@
     function showGif() {
         gifWasShown = true;
         stopTimer();
+        // Lazy-load dap.gif — only fetch it the first time it's needed
+        const gifImg = document.getElementById('gif-img');
+        if (gifImg.dataset.src && !gifImg.src.includes('dap.gif')) {
+            gifImg.src = gifImg.dataset.src;
+        }
         overlay.classList.add('visible');
     }
 

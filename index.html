@@ -22,11 +22,13 @@
         content="SlushyPie's personal landing page. VRChat, Resonite, and chill vibes.">
     <meta property="twitter:image" content="https://slushyp1e.github.io/SlushyPies.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
             --shadow: 6px 6px 0px 0px #000;
@@ -111,8 +113,8 @@
 <body class="min-h-screen text-slate-900 selection:bg-black selection:text-pink-300 pb-10 relative">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover"
-            onerror="this.style.display='none'">
+        <img id="bg-layer" src="SlushyPieBannerTransparent.webp" alt="" class="w-[110%] h-[110%] object-cover"
+            loading="lazy" onerror="this.src='SlushyPieBannerTransparent.png'">
     </div>
 
     <a href="shop/" aria-label="Visit Shop"
@@ -142,8 +144,11 @@
             <div
                 class="bento-card tilt-l rounded-xl p-8 md:col-span-2 xl:col-span-4 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <div class="relative shrink-0">
+                    <picture>
+                    <source srcset="SlushyPies.webp" type="image/webp">
                     <img src="SlushyPies.png" alt="SlushyPie"
                         class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                </picture>
                     <div class="absolute -bottom-2 -right-2 bg-green-400 w-6 h-6 border-2 border-black" title="Online">
                     </div>
                 </div>

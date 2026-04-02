@@ -21,12 +21,13 @@
     <meta property="twitter:description" content="SlushyPie's collection of GIFs.">
     <meta property="twitter:image" content="https://slushyp1e.github.io/SlushyPies.png">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+    <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
-
         :root {
             --shadow: 6px 6px 0px 0px #000;
             --shadow-hover: 2px 2px 0px 0px #000;
@@ -123,8 +124,8 @@
 <body class="min-h-screen text-slate-900 pb-10 relative">
 
     <div class="fixed inset-0 -z-10 flex items-center justify-center mix-blend-multiply opacity-20 pointer-events-none">
-        <img id="bg-layer" src="SlushyPieBannerTransparent.png" alt="" class="w-[110%] h-[110%] object-cover"
-            onerror="this.style.display='none'">
+        <img id="bg-layer" src="SlushyPieBannerTransparent.webp" alt="" class="w-[110%] h-[110%] object-cover"
+            loading="lazy" onerror="this.src='SlushyPieBannerTransparent.png'">
     </div>
 
     <main class="max-w-[1600px] w-full mx-auto px-4 md:px-8 xl:px-12 py-8 md:py-16">
@@ -221,6 +222,20 @@
         const renderGrid = () => {
             if (!GIF_FILES.length) return els.empty.classList.remove('hidden');
 
+            // Set up IntersectionObserver to lazy-load GIFs when they come into view
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        obs.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '200px' }); // start loading 200px before entering viewport
+
             GIF_FILES.forEach((filename, i) => {
                 const url = BASE_URL + filename;
                 const rotateClass = i % 2 === 0 ? 'tilt-l' : 'tilt-r';
@@ -231,7 +246,7 @@
 
                 card.innerHTML = `
                     <div class="relative cursor-pointer overflow-hidden aspect-video bg-slate-100 border-b-3 border-black js-view-trigger" data-url="${url}" data-name="${filename}">
-                        <img src="${url}" alt="${filename}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <img data-src="${url}" src="" alt="${filename}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                             <div class="bg-white border-2 border-black shadow-[4px_4px_0px_0px_#000] rounded-full p-2 text-black transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                                 <i data-lucide="maximize-2" class="w-6 h-6"></i>
@@ -251,6 +266,10 @@
                 `;
 
                 els.grid.appendChild(card);
+
+                // Observe the lazy image inside this card
+                const lazyImg = card.querySelector('img[data-src]');
+                if (lazyImg) observer.observe(lazyImg);
             });
 
             // Re-run icons for dynamic content
