@@ -88,6 +88,23 @@
                 transform: translate(-50%, 0);
             }
         }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: staggerSlideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes staggerSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -104,13 +121,13 @@
         <i data-lucide="shopping-cart" class="w-6 h-6 text-black group-hover:text-pink-500 transition-colors"></i>
     </a>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 md:py-16">
+    <main class="max-w-[1600px] w-full mx-auto px-4 md:px-8 xl:px-12 py-8 md:py-16">
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-6">
 
             <!-- Dynamic Status Card -->
             <div id="status-card"
-                class="hidden md:col-span-4 bento-card rounded-xl p-4 bg-lime-300 border-2 border-black items-center gap-4">
+                class="hidden md:col-span-4 xl:col-span-8 bento-card rounded-xl p-4 bg-lime-300 border-2 border-black items-center gap-4">
                 <div class="bg-black/10 p-2 rounded-full border-2 border-black relative">
                     <div class="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-75"></div>
                     <i data-lucide="radio" class="w-6 h-6 text-black relative z-10"></i>
@@ -123,7 +140,7 @@
             </div>
 
             <div
-                class="bento-card tilt-l rounded-xl p-8 md:col-span-2 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                class="bento-card tilt-l rounded-xl p-8 md:col-span-2 xl:col-span-4 flex flex-col sm:flex-row items-center sm:items-start gap-6">
                 <div class="relative shrink-0">
                     <img src="SlushyPies.png" alt="SlushyPie"
                         class="w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -139,8 +156,6 @@
                         <span
                             class="px-3 py-1 border-2 border-black bg-pink-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">VRChat</span>
                         <span
-                            class="px-3 py-1 border-2 border-black bg-purple-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default">Resonite</span>
-                        <span
                             class="px-3 py-1 border-2 border-black bg-yellow-300 text-xs font-bold uppercase hover:bg-white transition-colors cursor-default flex items-center gap-2">
                             Aussie <span id="local-time"
                                 class="bg-black text-white px-1 font-mono text-[10px]">--:--</span>
@@ -150,7 +165,7 @@
             </div>
 
             <div id="discord-card"
-                class="bento-card tilt-r rounded-xl p-6 md:col-span-2 flex flex-col justify-center cursor-pointer bg-indigo-50">
+                class="bento-card tilt-r rounded-xl p-6 md:col-span-2 xl:col-span-4 flex flex-col justify-center cursor-pointer bg-indigo-50">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-3">
                         <div
@@ -178,13 +193,13 @@
                 </div>
             </div>
 
-            <div class="bento-card rounded-xl p-6 md:col-span-3 bg-white">
+            <div class="bento-card rounded-xl p-6 md:col-span-3 xl:col-span-5 bg-white">
                 <h2
                     class="text-2xl font-bold mb-4 flex items-center gap-2 heading-font uppercase border-b-4 border-pink-300 inline-block w-full">
                     About Me</h2>
                 <div class="prose font-mono text-sm md:text-base leading-relaxed text-slate-800">
                     <p class="mb-4">
-                        Hey! I'm <strong>SlushyPie</strong>. Most of the time I'm hanging out in VRChat or Resonite
+                        Hey! I'm <strong>SlushyPie</strong>. Most of the time I'm hanging out in VRChat
                         (usually Black Cat, this is not an ad, maybe it is, you will never know). <strike>I'm not a
                             "content creator,"</strike> I kinda am, sometimes I make free stuff sometimes not... I'm
                         just a person vibing, hanging out, not really doing much to be honest, sometimes being mean to
@@ -200,7 +215,8 @@
                 </div>
             </div>
 
-            <div class="bento-card tilt-r rounded-xl p-6 md:col-span-1 flex flex-col justify-between bg-yellow-50">
+            <div
+                class="bento-card tilt-r rounded-xl p-6 md:col-span-1 xl:col-span-3 flex flex-col justify-between bg-yellow-50">
                 <h3 class="font-bold heading-font text-xl mb-4 border-b-2 border-black pb-2">STUFF I DO</h3>
                 <ul class="space-y-9 text-xs font-bold text-slate-800">
                     <li class="flex gap-2"><span class="text-pink-600">-></span> Sitting in one place for hours.</li>
@@ -210,7 +226,7 @@
                 </ul>
             </div>
 
-            <div class="md:col-span-2 grid grid-cols-2 gap-4">
+            <div class="md:col-span-2 xl:col-span-4 grid grid-cols-2 gap-4">
                 <a href="https://www.tiktok.com/@slushypievrc" target="_blank" rel="noopener noreferrer"
                     class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-black hover:text-white group">
                     <i data-lucide="music-2" class="w-8 h-8"></i>
@@ -218,7 +234,11 @@
                 </a>
                 <a href="https://www.youtube.com/@slushypievrc" target="_blank" rel="noopener noreferrer"
                     class="bento-card rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-red-600 hover:text-white group">
-                    <i data-lucide="youtube" class="w-8 h-8"></i>
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-current">
+                        <title>YouTube</title>
+                        <path
+                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
                     <span class="font-bold uppercase">YouTube</span>
                 </a>
                 <a href="https://steamcommunity.com/id/slushypie" target="_blank" rel="noopener noreferrer"
@@ -233,27 +253,21 @@
                 </a>
             </div>
 
-            <div class="bento-card rounded-xl p-6 md:col-span-2 bg-slate-900 text-white">
+            <div class="bento-card rounded-xl p-6 md:col-span-2 xl:col-span-4 bg-slate-900 text-white">
                 <h3 class="font-bold mb-4 flex items-center gap-2 heading-font text-xl">
-                    <i data-lucide="joystick" class="w-6 h-6"></i> MAIN GAMES
+                    <i data-lucide="joystick" class="w-6 h-6"></i> MAIN GAME
                 </h3>
-                <div class="grid grid-cols-2 gap-4 h-32">
+                <div class="grid grid-cols-1 gap-4 h-32">
                     <a href="https://hello.vrchat.com/" target="_blank" rel="noopener noreferrer"
                         class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
                         <img src="VRC_Logo.png"
                             class="h-16 w-auto object-contain group-hover:scale-110 transition-transform" alt="VRChat"
                             loading="lazy" onerror="this.style.display='none'">
                     </a>
-                    <a href="https://resonite.com/" target="_blank" rel="noopener noreferrer"
-                        class="flex items-center justify-center rounded-lg border-2 border-white/20 bg-slate-800 p-4 hover:bg-white hover:border-white transition-all group">
-                        <img src="resonitelogo.png"
-                            class="h-12 w-auto object-contain group-hover:scale-110 transition-transform" alt="Resonite"
-                            loading="lazy" onerror="this.style.display='none'">
-                    </a>
                 </div>
             </div>
 
-            <div class="md:col-span-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-4 xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <a href="gif.html"
                     class="bento-card tilt-l rounded-xl p-4 flex items-center justify-between hover:bg-purple-200 group">
                     <div class="flex items-center gap-4">
@@ -282,7 +296,8 @@
                 </a>
             </div>
 
-            <div class="md:col-span-4 text-center mt-8 text-xs font-bold text-slate-500 uppercase tracking-widest">
+            <div
+                class="md:col-span-4 xl:col-span-8 text-center mt-8 text-xs font-bold text-slate-500 uppercase tracking-widest">
                 &copy; <span id="year">2025</span> SlushyPie — totally a real corporation
             </div>
         </div>
@@ -311,6 +326,12 @@
     <script>
         (function () {
             lucide.createIcons();
+
+            // 0. Initial Stagger Animation
+            document.querySelectorAll('.bento-card').forEach((card, i) => {
+                card.classList.add('fade-in-up');
+                card.style.animationDelay = `${i * 0.08}s`;
+            });
 
             // 1. Offline Redirect Detection Logic
             const urlParams = new URLSearchParams(window.location.search);
