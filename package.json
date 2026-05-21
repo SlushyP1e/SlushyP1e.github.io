@@ -1,0 +1,21 @@
+{
+  "name": "slushyp1e.github.io-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build:css": "tailwindcss -i tailwind.input.css -o styles.css --minify && copy styles.css shop\\styles.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "sharp": "^0.34.5",
+    "tailwindcss": "^3.4.19"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+package-lock.json
+tailwind.input.css
+tailwind.config.js
+compress.js
+shop/styles.css

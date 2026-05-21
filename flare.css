@@ -1,0 +1,602 @@
+/* ==========================================================================
+   FLARE.CSS - SlushyPie Web App Custom Styles
+   ========================================================================== */
+
+:root {
+    --custom-cursor-bg: rgba(253, 224, 71, 0.4);
+    --custom-cursor-border: #000;
+    --neon-pink: #ec4899;
+    --neon-yellow: #fde047;
+    --neon-green: #22c55e;
+}
+
+/* Fallbacks for Tailwind classes */
+.bg-indigo-50 {
+    background-color: #eef2ff !important;
+}
+.bg-yellow-50 {
+    background-color: #fefce8 !important;
+}
+.bg-pink-300 {
+    background-color: #f9a8d4 !important;
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR (Desktop only)
+   ========================================================================== */
+body:not(.touch-device) {
+    cursor: none !important;
+}
+body:not(.touch-device) a,
+body:not(.touch-device) button,
+body:not(.touch-device) [role="button"],
+body:not(.touch-device) input,
+body:not(.touch-device) select,
+body:not(.touch-device) textarea {
+    cursor: none !important;
+}
+
+.custom-cursor {
+    width: 8px;
+    height: 8px;
+    background: var(--neon-pink);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: width 0.1s, height 0.1s;
+    mix-blend-mode: difference;
+}
+
+.custom-cursor-ring {
+    width: 32px;
+    height: 32px;
+    border: 2.5px solid var(--custom-cursor-border);
+    background: var(--custom-cursor-bg);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1), 
+                width 0.15s ease-out, 
+                height 0.15s ease-out, 
+                background-color 0.15s ease-out;
+}
+
+/* Hovering active state */
+.custom-cursor-ring.hovering {
+    width: 48px;
+    height: 48px;
+    background: rgba(236, 72, 153, 0.5);
+    border-color: #000;
+    transform: translate(-50%, -50%) scale(1.15);
+}
+
+.touch-device .custom-cursor,
+.touch-device .custom-cursor-ring {
+    display: none !important;
+}
+
+/* ==========================================================================
+   SCROLLBAR & PROGRESS BAR
+   ========================================================================== */
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    z-index: 9999;
+    background: #000;
+    overflow: hidden;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(
+        -45deg,
+        #ff90e8,
+        #ff90e8 10px,
+        #fde24f 10px,
+        #fde24f 20px
+    );
+    transition: width 0.05s ease-out;
+}
+
+/* Custom Neobrutalist Scrollbar */
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+::-webkit-scrollbar-track {
+    background: #fff;
+    border-left: 3px solid #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #ff90e8;
+    border: 3px solid #000;
+    box-shadow: 2px 2px 0px #000;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #fde24f;
+}
+
+/* ==========================================================================
+   "SOUR SLUSHY" DARK THEME OVERRIDES
+   ========================================================================== */
+body.dark-theme {
+    background-color: #0d0a16;
+    background-image: radial-gradient(#22c55e 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: #f1f5f9;
+}
+
+body.dark-theme #bg-layer {
+    opacity: 0.12;
+    filter: hue-rotate(180deg) saturate(1.5);
+}
+
+/* Bento Card Neobrutalist Neon glow in dark mode */
+body.dark-theme .bento-card,
+body.dark-theme .gallery-card {
+    background: #161224;
+    color: #f1f5f9;
+    border-color: #000;
+    box-shadow: 6px 6px 0px 0px var(--neon-green);
+}
+
+body.dark-theme .bento-card:hover,
+body.dark-theme .gallery-card:hover {
+    box-shadow: 2px 2px 0px 0px var(--neon-green);
+}
+
+/* Tilt states in dark mode */
+body.dark-theme .tilt-l:hover,
+body.dark-theme .tilt-r:hover {
+    transform: rotate(0deg) translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px var(--neon-green);
+}
+
+/* Custom background changes */
+body.dark-theme .bg-white {
+    background-color: #1f1b32 !important;
+    color: #f1f5f9;
+}
+body.dark-theme .bg-slate-100 {
+    background-color: #27223e !important;
+}
+body.dark-theme .bg-indigo-50 {
+    background-color: #191436 !important;
+}
+body.dark-theme .bg-yellow-50 {
+    background-color: #312b05 !important;
+}
+body.dark-theme .bg-yellow-100 {
+    background-color: #3b3305 !important;
+}
+body.dark-theme .bg-yellow-200 {
+    background-color: #4c4007 !important;
+}
+body.dark-theme .bg-pink-300 {
+    background-color: #c084fc !important; /* purple accent on dark mode */
+    color: #000;
+}
+body.dark-theme .bg-yellow-300 {
+    background-color: var(--neon-green) !important;
+    color: #000;
+}
+
+/* Specific text color overrides */
+body.dark-theme .text-slate-900,
+body.dark-theme .text-slate-800,
+body.dark-theme .text-slate-700,
+body.dark-theme .text-slate-600 {
+    color: #cbd5e1;
+}
+
+body.dark-theme .text-pink-600 {
+    color: #f472b6;
+}
+
+body.dark-theme strong {
+    color: #f472b6;
+}
+
+body.dark-theme .border-pink-300 {
+    border-color: #c084fc;
+}
+
+body.dark-theme .selection:bg-black ::selection,
+body.dark-theme ::selection {
+    background: var(--neon-green);
+    color: #000;
+}
+
+/* ==========================================================================
+   FLOATING CONTROL DECK
+   ========================================================================== */
+.floating-controls-deck {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 100;
+}
+
+.deck-btn {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 4px 4px 0px 0px #000;
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #000;
+}
+
+.deck-btn i {
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+}
+
+.deck-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px #000;
+    background: #ff90e8;
+}
+
+.deck-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+body.dark-theme .deck-btn {
+    background: #1f1b32;
+    color: #fff;
+    border-color: #000;
+    box-shadow: 4px 4px 0px 0px var(--neon-green);
+}
+
+body.dark-theme .deck-btn:hover {
+    background: #c084fc;
+    box-shadow: 2px 2px 0px 0px var(--neon-green);
+}
+
+body.dark-theme .deck-btn:active {
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   WIDGET: CASSETTE TAPE PLAYBACK DECK
+   ========================================================================== */
+.cassette-shell {
+    background: #13101c;
+    border: 3px solid #000;
+    border-radius: 8px;
+    height: 120px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+.cassette-label {
+    width: 75%;
+    height: 65%;
+    background: repeating-linear-gradient(
+        45deg,
+        #ec4899,
+        #ec4899 6px,
+        #fde047 6px,
+        #fde047 12px
+    );
+    border: 2px solid #000;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem;
+}
+
+body.dark-theme .cassette-label {
+    background: repeating-linear-gradient(
+        45deg,
+        #c084fc,
+        #c084fc 6px,
+        #22c55e 6px,
+        #22c55e 12px
+    );
+}
+
+.cassette-title {
+    background: #000;
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cassette-spindles {
+    display: flex;
+    gap: 32px;
+    z-index: 10;
+}
+
+.spindle {
+    width: 26px;
+    height: 26px;
+    border: 3px solid #000;
+    background: #fff;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spindle::before {
+    content: '';
+    width: 16px;
+    height: 3px;
+    background: #000;
+    position: absolute;
+    transform: rotate(0deg);
+}
+
+.spindle::after {
+    content: '';
+    width: 16px;
+    height: 3px;
+    background: #000;
+    position: absolute;
+    transform: rotate(90deg);
+}
+
+.playing .spindle {
+    animation: tape-spin 3s linear infinite;
+}
+
+@keyframes tape-spin {
+    100% { transform: rotate(360deg); }
+}
+
+.cassette-window {
+    width: 40px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid #000;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cassette-tape-roll {
+    width: 0%;
+    height: 100%;
+    background: #475569;
+    transition: width 1s linear;
+}
+
+.cassette-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cassette-btn {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #000;
+    padding: 0.5rem;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0px #000;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.cassette-btn:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000;
+    background: #fde047;
+}
+
+.cassette-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.cassette-btn.active {
+    background: var(--neon-green) !important;
+    color: #000;
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}
+
+/* ==========================================================================
+   WIDGET: INTERACTIVE BUBBLE SANDBOX
+   ========================================================================== */
+.bubble-sandbox-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.bubble-sandbox-container {
+    border: 3px solid #000;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+    height: 140px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: inset 3px 3px 0px rgba(0,0,0,0.1);
+}
+
+.sandbox-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #fff0f6;
+    transition: background-color 0.15s;
+}
+
+body.dark-theme .sandbox-canvas {
+    background: #181427;
+}
+
+.sandbox-instructions {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    background: #000;
+    color: #fff;
+    padding: 2px 6px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    pointer-events: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+body.dark-theme .sandbox-instructions {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+/* ==========================================================================
+   CLICKABLE STYLING FOR UNLOCKABLE QUOTE
+   ========================================================================== */
+.quote-locked {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.quote-locked:active {
+    animation: shake-small 0.15s infinite;
+}
+
+@keyframes shake-small {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(-2px, 2px) rotate(-1deg); }
+    75% { transform: translate(2px, -2px) rotate(1deg); }
+}
+
+.quote-unlocked-reveal {
+    animation: quote-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes quote-pop-in {
+    0% { transform: scale(0.9) rotate(-3deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.quote-lock-progress {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--neon-pink);
+    display: block;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   GUMROAD INTERACTION SHAKING & FLASH EFFECT
+   ========================================================================== */
+.gumroad-shake-1 {
+    animation: shake-lvl1 0.3s infinite;
+}
+.gumroad-shake-2 {
+    animation: shake-lvl2 0.2s infinite;
+}
+.gumroad-shake-3 {
+    animation: shake-lvl3 0.1s infinite;
+}
+
+@keyframes shake-lvl1 {
+    0%, 100% { transform: translate(0, 0) rotate(1deg); }
+    50% { transform: translate(-1px, 1px) rotate(-1deg); }
+}
+@keyframes shake-lvl2 {
+    0%, 100% { transform: translate(0, 0) rotate(2deg); }
+    50% { transform: translate(-3px, 3px) rotate(-2deg); }
+}
+@keyframes shake-lvl3 {
+    0%, 100% { transform: translate(-1px, -1px) rotate(3deg); }
+    25% { transform: translate(2px, -2px) rotate(-3deg); }
+    50% { transform: translate(-3px, 2px) rotate(3deg); }
+    75% { transform: translate(3px, -3px) rotate(-3deg); }
+}
+
+.screen-flash {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.flash-active {
+    animation: screen-flash-anim 0.5s ease-out forwards;
+}
+
+@keyframes screen-flash-anim {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   PARTICLE BUBBLE ANIMATIONS
+   ========================================================================== */
+.click-particle {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    animation: particle-fly 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes particle-fly {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.1);
+        opacity: 0;
+    }
+}
