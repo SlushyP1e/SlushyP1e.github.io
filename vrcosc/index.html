@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SlushyPie | VRCOSC Pulse Presets</title>
+    <meta name="description" content="VRCOSC Pulse presets made by SlushyPie. Free downloads." />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://slushypie.com/vrcosc/" />
+    <meta property="og:title" content="SlushyPie | VRCOSC Pulse Presets" />
+    <meta property="og:description" content="VRCOSC Pulse presets made by SlushyPie. Free downloads." />
+    <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
+
+    <link rel="icon" href="../favicon.ico" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <meta name="theme-color" content="#121212" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../theme.css" />
+  </head>
+
+  <body>
+    <div class="bg-mascot" aria-hidden="true">
+      <img id="bg-layer" src="../SlushyPieBannerTransparent.webp" alt="" loading="lazy" onerror="this.src='../SlushyPieBannerTransparent.png'" />
+    </div>
+
+    <a href="../" aria-label="Back Home" class="float-btn tl" title="Back Home">
+      <i data-lucide="arrow-left"></i>
+    </a>
+
+    <main class="wrap">
+      <!-- Header card -->
+      <div class="bento-card" style="margin-bottom:24px;">
+        <h1 class="page-title grad-text" style="margin-top:0;">VRCOSC Pulse Presets</h1>
+        <span class="pill pink" style="margin:12px 0;">Free downloads</span>
+        <div class="prose" style="margin-top:8px;">
+          <p>This is all of the <strong>VRCOSC Pulse presets</strong> I have made so far. Click the download button on any file to grab it.</p>
+          <p>You can download VRCOSC at <a href="https://vrcosc.com/" target="_blank" rel="noopener noreferrer" class="inline-link">vrcosc.com</a>.</p>
+          <p><span class="note-warn">⚠️ I am not affiliated with VRCOSC in any way, etc etc.</span></p>
+        </div>
+      </div>
+
+      <!-- Folder grid -->
+      <div id="folder-grid" class="folder-grid">
+        <div id="loading-card" class="bento-card" style="grid-column:1/-1;text-align:center;">
+          <i data-lucide="loader" class="spin" style="width:32px;height:32px;margin:0 auto 8px;"></i>
+          <p class="heading-font" style="text-transform:uppercase;">Loading presets...</p>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" class="bento-card empty-state" style="display:none;margin-top:24px;">
+        <i data-lucide="folder-x" style="color:var(--pink-text);"></i>
+        <h3 class="heading-font" style="font-size:1.4rem;text-transform:uppercase;margin:0 0 6px;">No presets yet!</h3>
+        <p class="muted" style="font-weight:700;">Check back later, slushy is cooking.</p>
+      </div>
+
+      <div class="footer">&copy; <span id="year">2025</span> SlushyPie <span class="heart">♡</span> made with love</div>
+    </main>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+      <i data-lucide="check-circle"></i>
+      <span id="toast-msg" class="mono">DOWNLOAD STARTED!</span>
+    </div>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const showToast = (msg) => {
+        toastMsg.textContent = msg;
+        toast.classList.add('show', 'toast-anim');
+        setTimeout(() => { toast.classList.remove('show', 'toast-anim'); }, 2500);
+      };
+
+      const formatSize = (bytes) => {
+        if (!bytes && bytes !== 0) return '';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+      };
+
+      const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+      const renderFolder = (folder, index) => {
+        const files = folder.files || [];
+        const fileList = files.map(f => {
+          const href = `${folder.path}/${f.name}`;
+          const size = f.size ? `<span class="size-tag">${formatSize(f.size)}</span>` : '';
+          return `
+            <li class="file-row">
+              <div class="fname">
+                <i data-lucide="file"></i>
+                <span>${esc(f.name)}</span>
+                ${size}
+              </div>
+              <a href="${esc(href)}" download class="get-btn" onclick="showToast('DOWNLOADING ${esc(f.name).toUpperCase()}'); if (window.playSlushySound) window.playSlushySound('success');">
+                <i data-lucide="download"></i> GET
+              </a>
+            </li>`;
+        }).join('');
+
+        return `
+          <div class="bento-card folder-card">
+            <div class="card-head">
+              <div class="icon-badge blue"><i data-lucide="folder"></i></div>
+              <div style="min-width:0;">
+                <h3 class="heading-font" style="font-size:1.15rem;text-transform:uppercase;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(folder.name)}</h3>
+                <p class="mono faint" style="font-size:0.65rem;text-transform:uppercase;margin:2px 0 0;">${files.length} file${files.length === 1 ? '' : 's'}</p>
+              </div>
+            </div>
+            ${folder.description ? `<p class="folder-desc">${esc(folder.description)}</p>` : ''}
+            <ul class="file-list">${fileList || '<li class="muted" style="font-style:italic;font-size:0.8rem;">empty folder</li>'}</ul>
+          </div>`;
+      };
+
+      fetch('manifest.json?t=' + Date.now())
+        .then(r => { if (!r.ok) throw new Error('No manifest'); return r.json(); })
+        .then(data => {
+          const grid = document.getElementById('folder-grid');
+          document.getElementById('loading-card').remove();
+          const folders = data.folders || [];
+          if (folders.length === 0) { document.getElementById('empty-state').style.display = 'block'; return; }
+          grid.innerHTML = folders.map((f, i) => renderFolder(f, i)).join('');
+          document.querySelectorAll('#folder-grid .bento-card').forEach((card, i) => {
+            card.classList.add('fade-in-up');
+            card.style.animationDelay = `${i * 0.08}s`;
+          });
+          window.lucide && lucide.createIcons();
+        })
+        .catch(err => {
+          console.error('Failed to load manifest:', err);
+          const lc = document.getElementById('loading-card');
+          if (lc) lc.remove();
+          document.getElementById('empty-state').style.display = 'block';
+          window.lucide && lucide.createIcons();
+        });
+
+      window.lucide && lucide.createIcons();
+    </script>
+  </body>
+</html>

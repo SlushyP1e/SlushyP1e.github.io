@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SlushyPie | Home</title>
+    <meta name="description" content="SlushyPie's little corner of the internet. 3D art, VRChat, and the little things I make." />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://slushypie.com/" />
+    <meta property="og:title" content="SlushyPie | Home" />
+    <meta property="og:description" content="SlushyPie's little corner of the internet. 3D art, VRChat, and the little things I make." />
+    <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <meta name="theme-color" content="#121212" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* ================================================================
+         EDITING GUIDE
+         - Colors: change the variables in :root just below.
+         - Text: scroll to <body>; each section is marked with a comment
+           (Hero, About, Discord, Store, Elsewhere, Final CTA, Footer).
+         - Links: search for "https://" to find every external link.
+         - GIF gallery and VRCOSC pages share theme.css instead.
+         ================================================================ */
+      :root {
+        --bg: #121212;            /* flat neutral gray */
+        --panel: #1a1a1a;
+        --panel-2: #212121;
+        --border: #2b2b2b;
+        --border-soft: #242424;
+        --text: #ededed;
+        --text-dim: #9e9e9e;
+        --text-faint: #6d6d6d;
+        --rose: #e7b7c7;          /* flat pastel pink accent */
+        --rose-soft: #d5a6b6;
+        --rose-text: #dda9bb;     /* pastel pink for accent text */
+        --rose-tint: rgba(231,183,199,0.12);
+        --radius: 16px;
+        --radius-sm: 12px;
+        --maxw: 1040px;
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* soft, plush deceleration */
+        font-synthesis: none;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      a { color: inherit; text-decoration: none; }
+      img { max-width: 100%; display: block; }
+
+      /* ---------- Nav ---------- */
+      .nav {
+        position: sticky; top: 0; z-index: 40;
+        display: flex; align-items: center; gap: 12px;
+        padding: 16px 20px;
+        max-width: var(--maxw); margin: 0 auto;
+        background: color-mix(in srgb, var(--bg) 84%, transparent);
+        backdrop-filter: blur(8px);
+      }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.3rem; }
+      .brand .avatar {
+        width: 42px; height: 42px; border-radius: 50%;
+        object-fit: cover; border: 2px solid var(--border);
+      }
+      .nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+      .nav-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 0 15px; height: 42px; border-radius: 11px;
+        border: 1px solid var(--border); background: var(--panel);
+        color: var(--text-dim); font-weight: 700; font-size: 0.95rem;
+        transition: color .18s, background .18s, border-color .18s;
+      }
+      .nav-link:hover { color: var(--text); background: var(--panel-2); border-color: #3a3a3a; }
+      .nav-link i { width: 18px; height: 18px; }
+      .nav-link.primary { color: var(--text); }
+      .nav-link svg { width: 20px; height: 20px; }
+      .nav-link.icon-only { padding: 0 12px; cursor: pointer; font-family: inherit; }
+
+      /* ---------- Layout ---------- */
+      .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+      section.block { padding-top: 64px; padding-bottom: 64px; }
+      section[id] { scroll-margin-top: 84px; }
+      .eyebrow {
+        color: var(--rose-text); font-weight: 800; font-size: 0.78rem;
+        letter-spacing: 0.15em; text-transform: uppercase;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero { padding-top: 44px; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+      /* Smooth crossfade when switching hero layout */
+      .hero { transition: opacity .2s ease; }
+      .hero.switching { opacity: 0; }
+      .hero-copy { display: contents; }
+      .hero-avatar-wrap { position: relative; width: 240px; height: 240px; margin: 20px auto 28px; flex-shrink: 0; }
+
+      /* Left-aligned layout (default), deliberately not the centered layout */
+      @media (min-width: 880px) {
+        .hero.layout-left { flex-direction: row-reverse; align-items: center; justify-content: space-between; text-align: left; gap: 56px; }
+        .hero.layout-left .hero-copy { display: block; flex: 1; max-width: 560px; }
+        .hero.layout-left .hero-avatar-wrap { width: 300px; height: 300px; margin: 0; }
+        .hero.layout-left h1 { margin-left: 0; margin-right: 0; max-width: none; }
+        .hero.layout-left .hero-sub { margin-left: 0; margin-right: 0; }
+        .hero.layout-left .cta-row { justify-content: flex-start; }
+        .hero.layout-left .tags { justify-content: flex-start; margin-left: 0; margin-right: 0; }
+      }
+      .hero-avatar {
+        width: 100%; height: 100%; border-radius: 50%;
+        object-fit: cover; border: 3px solid var(--border);
+        transition: transform .4s var(--ease-out), border-color .4s var(--ease-out);
+      }
+      .hero-avatar:hover { transform: scale(1.03) rotate(1.5deg); border-color: var(--rose-soft); }
+
+      /* Entrance: hero pieces rise in one after another on load */
+      .hero-avatar-wrap { animation: riseIn .8s var(--ease-out) both .05s; }
+      .hero .chip       { animation: riseIn .7s var(--ease-out) both .16s; }
+      .hero h1          { animation: riseIn .7s var(--ease-out) both .26s; }
+      .hero .hero-sub   { animation: riseIn .7s var(--ease-out) both .36s; }
+      .hero .cta-row    { animation: riseIn .7s var(--ease-out) both .46s; }
+      .hero .tags       { animation: riseIn .7s var(--ease-out) both .56s; }
+      @keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* Scroll reveal: JS adds .reveal, then .visible when scrolled into view.
+         Without JS nothing is ever hidden. */
+      .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+
+      /* Reduced motion: skip the entrance and reveal movement, but leave the
+         gentle doodle float and small hover fades at their normal speed —
+         forcing everything to near-zero durations makes looping animations
+         jitter and hovers feel broken. */
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .hero-avatar-wrap, .hero .chip, .hero h1, .hero .hero-sub, .hero .cta-row, .hero .tags { animation: none; }
+        .reveal { transition: none; opacity: 1; transform: none; }
+      }
+      .doodle { position: absolute; color: var(--rose-soft); opacity: 0.55; animation: float 5.5s ease-in-out infinite; }
+      .doodle i { width: 30px; height: 30px; }
+      .doodle.d1 { top: 4%;  left: -12%; animation-delay: 0s; }
+      .doodle.d2 { top: -4%; right: -6%; animation-delay: .7s; }
+      .doodle.d3 { top: 44%; left: -20%; animation-delay: 1.2s; }
+      .doodle.d4 { top: 42%; right: -18%; animation-delay: 1.7s; }
+      .doodle.d5 { bottom: -4%; left: 6%; animation-delay: 2.2s; }
+      .doodle.d6 { bottom: 2%; right: 4%; animation-delay: 2.7s; }
+      @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(5deg); } }
+
+      .chip {
+        display: inline-flex; align-items: center; gap: 8px;
+        border: 1px solid var(--border); background: var(--panel);
+        color: var(--rose-text); padding: 8px 18px; border-radius: 999px;
+        font-size: 0.9rem; font-weight: 600;
+      }
+      .chip i { width: 16px; height: 16px; }
+
+      .hero h1 {
+        font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1.06;
+        font-weight: 800; letter-spacing: -0.02em; margin: 22px auto 16px; max-width: 14ch;
+      }
+      .hero h1 .rose { color: var(--rose); }
+      .hero-sub { color: var(--text-dim); font-size: clamp(1.05rem, 2.2vw, 1.25rem); max-width: 48ch; margin: 0 auto 30px; }
+
+      .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 11px;
+        height: 54px; padding: 0 26px; border-radius: 13px;
+        font-weight: 800; font-size: 1.02rem; cursor: pointer;
+        border: 1px solid transparent; transition: transform .12s, filter .18s, background .18s, border-color .18s;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary { background: var(--rose); color: #1c1c1c; }
+      .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); }
+      .btn-ghost:hover { transform: translateY(-2px); }
+      .btn-primary svg { width: 22px; height: 22px; }
+      .btn-ghost { background: var(--panel); color: var(--text); border-color: var(--border); }
+      .btn-ghost:hover { background: var(--panel-2); border-color: #3a3a3a; }
+      .btn-ghost i { width: 20px; height: 20px; color: var(--text-dim); }
+
+      .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 30px auto 0; max-width: 640px; }
+      .tag {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+        background: var(--rose-tint); color: var(--rose-text);
+      }
+      .tag i { width: 16px; height: 16px; }
+      .tag .clock { font-variant-numeric: tabular-nums; }
+
+      /* ---------- About ---------- */
+      .about { display: grid; gap: 32px; align-items: center; }
+      @media (min-width: 820px) { .about { grid-template-columns: 0.85fr 1.15fr; } }
+      .about .serif {
+        font-family: "Playfair Display", serif; font-style: italic; font-weight: 600;
+        font-size: clamp(1.9rem, 4.5vw, 2.8rem); line-height: 1.15; margin: 10px 0 0; color: var(--text);
+      }
+      .about .prose p { color: var(--text-dim); font-size: 1.08rem; margin: 0 0 14px; }
+      .about .prose strong { color: var(--text); }
+      .facts { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
+      .facts li { display: flex; align-items: flex-start; gap: 12px; color: var(--text-dim); font-size: 1rem; font-weight: 500; }
+      .facts li i { width: 18px; height: 18px; color: var(--rose); flex-shrink: 0; margin-top: 3px; }
+      .facts strong { color: var(--text); font-weight: 700; }
+
+      /* ---------- Discord card ---------- */
+      .discord-wrap { display: grid; gap: 36px; align-items: center; }
+      @media (min-width: 820px) { .discord-wrap { grid-template-columns: 1fr 1fr; } }
+      .discord-text h2 { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; margin: 12px 0 14px; }
+      .discord-text p { color: var(--text-dim); font-size: 1.08rem; margin: 0 0 18px; }
+      .copy-field {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+        padding: 14px 18px; cursor: pointer; max-width: 340px; transition: border-color .18s;
+      }
+      .copy-field:hover { border-color: #3a3a3a; }
+      .copy-field .handle { font-weight: 800; font-size: 1.05rem; }
+      .copy-field .copy-tag { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text-faint); }
+
+      .discord-msg { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+      .dm-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+      .dm-cat { width: 46px; height: 46px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; color: #1c1c1c; }
+      .dm-cat i { width: 26px; height: 26px; }
+      .dm-name { font-weight: 800; font-size: 1.05rem; }
+      .dm-card { background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 18px; }
+      .dm-card h4 { margin: 0 0 8px; font-size: 1.2rem; font-weight: 800; }
+      .dm-card p { margin: 0; color: var(--text-dim); font-size: 1rem; }
+      .dm-card .u { color: var(--rose-text); }
+
+      /* ---------- Store ---------- */
+      .section-head { text-align: center; margin-bottom: 40px; }
+      .section-head h2 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin: 10px 0 8px; }
+      .section-head p { color: var(--text-dim); font-size: 1.08rem; margin: 0; }
+
+      .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+      .store-card {
+        display: flex; flex-direction: column; gap: 8px;
+        background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 26px; transition: border-color .3s var(--ease-out), transform .3s var(--ease-out), background .3s var(--ease-out);
+      }
+      .store-card:hover { border-color: var(--rose-soft); transform: translateY(-5px); background: var(--panel-2); }
+      .store-card.feat { border-color: rgba(231,183,199,0.3); }
+      .store-card.feat:hover { border-color: var(--rose-soft); }
+      .store-card .ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 8px; background: var(--rose-tint); color: var(--rose); transition: transform .3s var(--ease-out); }
+      .store-card:hover .ic { transform: scale(1.08) rotate(-4deg); }
+      .store-card .ic i { width: 26px; height: 26px; }
+      .store-card h3 { margin: 0; font-size: 1.3rem; font-weight: 800; }
+      .store-card p { margin: 0; color: var(--text-dim); font-size: 0.98rem; flex: 1; }
+      .store-card .go { display: inline-flex; align-items: center; gap: 8px; color: var(--rose-text); font-weight: 700; margin-top: 8px; }
+      .store-card .go i { width: 17px; height: 17px; transition: transform .2s ease; }
+      .store-card:hover .go i { transform: translateX(5px); }
+      .store-note { text-align: center; color: var(--text-faint); font-size: 0.92rem; margin-top: 26px; }
+
+      /* ---------- Links / socials ---------- */
+      .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+      .link-tile {
+        display: flex; align-items: center; gap: 14px;
+        background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 18px 20px; transition: border-color .3s var(--ease-out), transform .3s var(--ease-out), background .3s var(--ease-out);
+      }
+      .link-tile:hover { border-color: var(--rose-soft); transform: translateY(-4px); background: var(--panel-2); }
+      .link-tile .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--rose-tint); color: var(--rose); flex-shrink: 0; transition: transform .3s var(--ease-out); }
+      .link-tile:hover .ic { transform: scale(1.08); }
+      .link-tile .ic i, .link-tile .ic svg { width: 22px; height: 22px; }
+      .link-tile .ic svg { fill: currentColor; }
+      .link-tile .t-title { font-weight: 800; display: block; }
+      .link-tile .t-sub { color: var(--text-dim); font-size: 0.88rem; }
+      .link-tile .arrow { margin-left: auto; color: var(--text-faint); transition: transform .2s ease, color .2s ease; }
+      .link-tile:hover .arrow { transform: translateX(4px); color: var(--rose-text); }
+      .link-tile .arrow i { width: 18px; height: 18px; }
+
+      /* ---------- Final CTA ---------- */
+      .final-cta { text-align: center; background: var(--panel); border: 1px solid var(--border); border-radius: 24px; padding: 52px 24px; }
+      .final-cta h2 { font-size: clamp(1.9rem, 6vw, 3rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+      .final-cta p { color: var(--text-dim); font-size: 1.1rem; max-width: 44ch; margin: 0 auto 26px; }
+
+      /* ---------- Footer ---------- */
+      footer { border-top: 1px solid var(--border); margin-top: 30px; }
+      .foot { max-width: var(--maxw); margin: 0 auto; padding: 34px 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+      .foot .brand { font-size: 1.1rem; }
+      .foot-links { display: flex; flex-wrap: wrap; gap: 20px; }
+      .foot-links a { color: var(--text-dim); font-weight: 600; transition: color .18s; }
+      .foot-links a:hover { color: var(--rose-text); }
+      .foot-copy { width: 100%; color: var(--text-faint); font-size: 0.88rem; }
+
+      /* ---------- Toast ---------- */
+      .toast {
+        position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px);
+        background: var(--panel-2); border: 1px solid var(--border); border-radius: 12px;
+        padding: 12px 18px; display: flex; align-items: center; gap: 10px;
+        font-weight: 700; font-size: 0.9rem; opacity: 0; pointer-events: none;
+        transition: opacity .25s, transform .25s; z-index: 60;
+      }
+      .toast i { width: 18px; height: 18px; color: var(--rose); }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+      /* The layout toggle only matters where the two layouts differ (>=880px);
+         below that both render the same centered stack, so hide it. */
+      @media (max-width: 879px) {
+        #layout-toggle { display: none; }
+      }
+      /* Mobile nav: icon-only buttons (incl. Discord) so it never overflows. */
+      @media (max-width: 560px) {
+        .nav-link span { display: none; }
+        .nav-link, .nav-link.primary { padding: 0 12px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Nav -->
+    <nav class="nav">
+      <a href="index.html" class="brand">
+        <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" onerror="this.src='SlushyPies.png'" />
+        <span class="name">SlushyPie</span>
+      </a>
+      <div class="nav-right">
+        <button type="button" id="layout-toggle" class="nav-link icon-only" title="Switch hero layout" aria-label="Switch hero layout"><i data-lucide="panel-left"></i></button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero wrap layout-left" id="hero">
+        <div class="hero-avatar-wrap">
+          <picture>
+            <source srcset="SlushyPies.webp" type="image/webp" />
+            <img src="SlushyPies.png" alt="SlushyPie" class="hero-avatar" />
+          </picture>
+          <span class="doodle d1"><i data-lucide="star"></i></span>
+          <span class="doodle d2"><i data-lucide="sparkles"></i></span>
+          <span class="doodle d3"><i data-lucide="heart"></i></span>
+          <span class="doodle d4"><i data-lucide="music"></i></span>
+          <span class="doodle d5"><i data-lucide="code-2"></i></span>
+          <span class="doodle d6"><i data-lucide="cat"></i></span>
+        </div>
+
+        <div class="hero-copy">
+        <span class="chip"><i data-lucide="sparkles"></i> welcome to my little corner ♡</span>
+
+        <h1>hi, i'm <span class="rose">SlushyPie</span></h1>
+        <p class="hero-sub">
+          I'm a 3D artist who basically lives in VRChat. I make little things for it,
+          play way too many games, and I'd rather have a few close friends than a big crowd.
+          So glad you're here ^~^
+        </p>
+
+        <div class="cta-row">
+          <a href="https://discord.com/invite/AF2m2uh" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+            Find me on Discord
+          </a>
+          <a href="#store" class="btn btn-ghost"><i data-lucide="shopping-bag"></i> Visit the shop</a>
+        </div>
+
+        <div class="tags">
+          <span class="tag"><i data-lucide="glasses"></i> VRChat</span>
+          <span class="tag"><i data-lucide="clock"></i> Aussie <span id="local-time" class="clock">--:--</span></span>
+          <span class="tag"><i data-lucide="box"></i> Blender (badly)</span>
+        </div>
+        </div><!-- /hero-copy -->
+      </section>
+
+      <!-- About -->
+      <section class="block wrap">
+        <div class="about">
+          <div>
+            <span class="eyebrow">About me</span>
+            <p class="serif">i just really like making cute little things.</p>
+            <ul class="facts">
+              <li><i data-lucide="user"></i><span>A guy from <strong>Australia</strong> (you can call me Slushy)</span></li>
+              <li><i data-lucide="footprints"></i><span>Full-body in VRChat with 3 Vive Ultimate Trackers</span></li>
+              <li><i data-lucide="bomb"></i><span>A custom babble tracker that looks like a little bomb</span></li>
+            </ul>
+          </div>
+          <div class="prose">
+            <p>Most of the time I'm in <strong>VRChat</strong>, making things in 3D. I've been learning Blender for about four years now, still figuring bits of it out as I go.</p>
+            <p>Sometimes I make little things for VRChat and other platforms. I'd rather have a few close friends than a huge crowd, so I really like taking the time to get to know people.</p>
+            <p>Mostly I'm just here to make cute stuff and have a good time ^~^</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Discord -->
+      <section class="block wrap">
+        <div class="discord-wrap">
+          <div class="discord-msg">
+            <div class="dm-head">
+              <span class="dm-cat"><i data-lucide="cat"></i></span>
+              <span class="dm-name">SlushyPie</span>
+            </div>
+            <div class="dm-card">
+              <h4>hey, come say hi!</h4>
+              <p>You can usually catch me online <span class="u">@slushypie</span>. I don't always accept random adds, but feel free to say hi!</p>
+            </div>
+          </div>
+          <div class="discord-text">
+            <span class="eyebrow">Discord</span>
+            <h2>Let's hang out</h2>
+            <p>It's not my server, but The Black Cat is where you'll usually find me. Say hi on Discord, or copy my handle below.</p>
+            <div class="copy-field" id="copy-field">
+              <span class="handle">@slushypie</span>
+              <span class="copy-tag">CLICK TO COPY</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Store -->
+      <section class="block wrap" id="store">
+        <div class="section-head">
+          <span class="eyebrow">Store</span>
+          <h2>The little things I make</h2>
+          <p>VRChat assets and other little things I've made. Grab them wherever suits you best ♡ I appreciate any and all sales.</p>
+        </div>
+        <div class="store-grid">
+          <a href="https://jinxxy.com/SlushyPie" target="_blank" rel="noopener noreferrer" class="store-card feat">
+            <span class="ic"><i data-lucide="sparkles"></i></span>
+            <h3>Jinxxy</h3>
+            <p>All my VRChat things in one place. This is my main shop, and where I get paid right away.</p>
+            <span class="go">Browse Jinxxy <i data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://ko-fi.com/slushypie/shop" target="_blank" rel="noopener noreferrer" class="store-card">
+            <span class="ic"><i data-lucide="coffee"></i></span>
+            <h3>Ko-fi</h3>
+            <p>The same things, plus you can send me a little donation with a message if you like.</p>
+            <span class="go">Visit Ko-fi <i data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://slushypie.gumroad.com/" target="_blank" rel="noopener noreferrer" class="store-card">
+            <span class="ic"><i data-lucide="shopping-bag"></i></span>
+            <h3>Gumroad</h3>
+            <p>The same things, just over on Gumroad. Whichever you prefer!</p>
+            <span class="go">Visit Gumroad <i data-lucide="arrow-right"></i></span>
+          </a>
+        </div>
+        <p class="store-note">Thank you for supporting the little things I make ♡</p>
+      </section>
+
+      <!-- Elsewhere -->
+      <section class="block wrap">
+        <div class="section-head">
+          <span class="eyebrow">Elsewhere</span>
+          <h2>Find me around</h2>
+        </div>
+        <div class="link-grid">
+          <a href="https://www.youtube.com/@slushypievrc" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></span>
+            <span><span class="t-title">YouTube</span><span class="t-sub">@slushypievrc</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
+          <a href="https://steamcommunity.com/id/slushypie" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><i data-lucide="gamepad-2"></i></span>
+            <span><span class="t-title">Steam</span><span class="t-sub">Gaming</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
+          <a href="https://vrchat.com/home/user/usr_8a525779-3622-4f25-89d9-c15404516391" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><i data-lucide="user-check"></i></span>
+            <span><span class="t-title">VRChat</span><span class="t-sub">Profile</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
+          <a href="https://throne.com/slushypie" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><i data-lucide="gift"></i></span>
+            <span><span class="t-title">Throne</span><span class="t-sub">Wishlist</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
+          <a href="gif.html" class="link-tile">
+            <span class="ic"><i data-lucide="film"></i></span>
+            <span><span class="t-title">GIF Gallery</span><span class="t-sub">My GIFs</span></span>
+            <span class="arrow"><i data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="vrcosc/" class="link-tile">
+            <span class="ic"><i data-lucide="radio"></i></span>
+            <span><span class="t-title">VRCOSC</span><span class="t-sub">Pulse presets</span></span>
+            <span class="arrow"><i data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="https://ko-fi.com/slushypie" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><i data-lucide="coffee"></i></span>
+            <span><span class="t-title">Support me</span><span class="t-sub">Ko-fi</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Final CTA -->
+      <section class="block wrap">
+        <div class="final-cta">
+          <h2>Come hang out</h2>
+          <p>Say hi on Discord, grab something from the shop, or just poke around ^~^</p>
+          <div class="cta-row">
+            <a href="https://discord.com/invite/AF2m2uh" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+              Say hi on Discord
+            </a>
+            <a href="#store" class="btn btn-ghost"><i data-lucide="shopping-bag"></i> Browse the shop</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="foot">
+        <a href="index.html" class="brand">
+          <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" onerror="this.src='SlushyPies.png'" />
+          <span class="name">SlushyPie</span>
+        </a>
+        <div class="foot-links">
+          <a href="#store">Shop</a>
+          <a href="gif.html">GIFs</a>
+          <a href="vrcosc/">VRCOSC</a>
+          <a href="https://discord.com/invite/AF2m2uh" target="_blank" rel="noopener noreferrer">Discord</a>
+        </div>
+        <div class="foot-copy">&copy; <span id="year">2026</span> SlushyPie <span style="color:var(--rose-text);">♡</span> made with love</div>
+      </div>
+    </footer>
+
+    <!-- Copied toast -->
+    <div id="toast" class="toast"><i data-lucide="check-circle"></i> <span>Copied to clipboard!</span></div>
+
+    <script>
+      window.lucide && lucide.createIcons();
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Live Aussie time
+      const timeEl = document.getElementById('local-time');
+      const updateTime = () => {
+        const opts = { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', hour12: false };
+        timeEl.textContent = new Date().toLocaleTimeString('en-AU', opts);
+      };
+      setInterval(updateTime, 1000); updateTime();
+
+      // Copy Discord handle
+      const toast = document.getElementById('toast');
+      document.getElementById('copy-field').addEventListener('click', () => {
+        navigator.clipboard.writeText('slushypie').then(() => {
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 2500);
+        }).catch(() => {});
+      });
+
+      // Hero layout toggle (left is the default), with a smooth crossfade
+      const hero = document.getElementById('hero');
+      const applyLayout = (l) => {
+        hero.classList.toggle('layout-left', l !== 'center');
+        hero.classList.toggle('layout-center', l === 'center');
+      };
+      const setLayout = (l, animate) => {
+        if (!animate) { applyLayout(l); return; }
+        hero.classList.add('switching');
+        setTimeout(() => {
+          applyLayout(l);
+          requestAnimationFrame(() => hero.classList.remove('switching'));
+        }, 200);
+      };
+      setLayout(localStorage.getItem('heroLayout') || 'left', false);
+      document.getElementById('layout-toggle').addEventListener('click', () => {
+        const next = hero.classList.contains('layout-center') ? 'left' : 'center';
+        setLayout(next, true);
+        localStorage.setItem('heroLayout', next);
+      });
+
+      // Scroll reveal: sections and cards rise in as you scroll.
+      // Cards inside a grid stagger slightly for a cascade effect.
+      const revealTargets = document.querySelectorAll(
+        '.section-head, .about > div, .discord-wrap > div, .store-card, .store-note, .link-tile, .final-cta'
+      );
+      const seen = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          el.classList.add('visible');
+          // drop the stagger delay once revealed, otherwise it would also
+          // delay every hover transition afterwards
+          if (el.style.transitionDelay) {
+            const clear = () => { el.style.transitionDelay = ''; };
+            el.addEventListener('transitionend', clear, { once: true });
+            setTimeout(clear, 1500);
+          }
+          seen.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
+      revealTargets.forEach((el) => {
+        // stagger siblings inside grids (store cards, link tiles)
+        const idx = [...el.parentElement.children].indexOf(el);
+        if (el.matches('.store-card, .link-tile')) el.style.transitionDelay = `${Math.min(idx * 70, 420)}ms`;
+        el.classList.add('reveal');
+        seen.observe(el);
+      });
+    </script>
+  </body>
+</html>
