@@ -76,7 +76,11 @@
         max-width: var(--maxw); margin: 0 auto;
         background: color-mix(in srgb, var(--bg) 84%, transparent);
         backdrop-filter: blur(8px);
+        border-bottom: 1px solid transparent;
+        transition: background .3s ease, border-color .3s ease;
       }
+      /* Firms up once you scroll away from the top */
+      .nav.scrolled { background: color-mix(in srgb, var(--bg) 93%, transparent); border-bottom-color: var(--border); }
       .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.3rem; }
       .brand .avatar {
         width: 42px; height: 42px; border-radius: 50%;
@@ -153,15 +157,17 @@
         .hero-avatar-wrap, .hero .chip, .hero h1, .hero .hero-sub, .hero .cta-row, .hero .tags { animation: none; }
         .reveal { transition: none; opacity: 1; transform: none; }
       }
-      .doodle { position: absolute; color: var(--rose-soft); opacity: 0.55; animation: float 5.5s ease-in-out infinite; }
-      .doodle i { width: 30px; height: 30px; }
+      .doodle { position: absolute; color: var(--rose-soft); opacity: 0.55; animation: float 5.5s ease-in-out infinite; will-change: transform, translate; }
+      .doodle i, .doodle svg { width: 30px; height: 30px; }
       .doodle.d1 { top: 4%;  left: -12%; animation-delay: 0s; }
       .doodle.d2 { top: -4%; right: -6%; animation-delay: .7s; }
       .doodle.d3 { top: 44%; left: -20%; animation-delay: 1.2s; }
       .doodle.d4 { top: 42%; right: -18%; animation-delay: 1.7s; }
       .doodle.d5 { bottom: -4%; left: 6%; animation-delay: 2.2s; }
       .doodle.d6 { bottom: 2%; right: 4%; animation-delay: 2.7s; }
-      @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-10px) rotate(5deg); } }
+      /* Uses the individual translate/rotate properties (not `transform`) so the
+         cursor parallax, which sets `transform`, composes on top instead of fighting it. */
+      @keyframes float { 0%,100% { translate: 0 0; rotate: 0deg; } 50% { translate: 0 -10px; rotate: 5deg; } }
 
       .chip {
         display: inline-flex; align-items: center; gap: 8px;
@@ -169,7 +175,10 @@
         color: var(--rose-text); padding: 8px 18px; border-radius: 999px;
         font-size: 0.9rem; font-weight: 600;
       }
-      .chip i { width: 16px; height: 16px; }
+      .chip i, .chip svg { width: 16px; height: 16px; }
+      /* The sparkle gently twinkles */
+      .chip i, .chip svg { animation: twinkle 3.6s ease-in-out infinite; transform-origin: center; }
+      @keyframes twinkle { 0%, 100% { opacity: 1; scale: 1; rotate: 0deg; } 50% { opacity: .55; scale: .8; rotate: -14deg; } }
 
       .hero h1 {
         font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1.06;
@@ -186,7 +195,14 @@
         border: 1px solid transparent; transition: transform .12s, filter .18s, background .18s, border-color .18s;
       }
       .btn:active { transform: translateY(1px); }
-      .btn-primary { background: var(--rose); color: #1c1c1c; }
+      .btn-primary { background: var(--rose); color: #1c1c1c; position: relative; overflow: hidden; }
+      /* Soft light sweeps across on hover */
+      .btn-primary::after {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.5) 50%, transparent 65%);
+        transform: translateX(-120%); transition: transform .7s var(--ease-out);
+      }
+      .btn-primary:hover::after { transform: translateX(120%); }
       .btn-primary:hover { filter: brightness(1.05); transform: translateY(-2px); }
       .btn-ghost:hover { transform: translateY(-2px); }
       .btn-primary svg { width: 22px; height: 22px; }
@@ -199,7 +215,9 @@
         display: inline-flex; align-items: center; gap: 8px;
         padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
         background: var(--rose-tint); color: var(--rose-text);
+        transition: transform .25s var(--ease-out), background .25s var(--ease-out), color .25s var(--ease-out);
       }
+      .tag:hover { transform: translateY(-3px); background: rgba(231,183,199,0.2); color: var(--rose); }
       .tag i { width: 16px; height: 16px; }
       .tag .clock { font-variant-numeric: tabular-nums; }
 
@@ -233,7 +251,11 @@
 
       .discord-msg { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
       .dm-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-      .dm-cat { width: 46px; height: 46px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; color: #1c1c1c; }
+      /* The message card drifts gently; the cat perks up when you hover the card */
+      .dm-card { animation: floatCard 6s ease-in-out infinite; }
+      @keyframes floatCard { 0%,100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+      .dm-cat { width: 46px; height: 46px; border-radius: 50%; background: var(--rose); display: grid; place-items: center; color: #1c1c1c; transition: transform .3s var(--ease-out); }
+      .discord-msg:hover .dm-cat { transform: rotate(-8deg) scale(1.08); }
       .dm-cat i { width: 26px; height: 26px; }
       .dm-name { font-weight: 800; font-size: 1.05rem; }
       .dm-card { background: var(--panel-2); border: 1px solid var(--border-soft); border-radius: var(--radius-sm); padding: 18px; }
@@ -293,8 +315,10 @@
       .foot { max-width: var(--maxw); margin: 0 auto; padding: 34px 20px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
       .foot .brand { font-size: 1.1rem; }
       .foot-links { display: flex; flex-wrap: wrap; gap: 20px; }
-      .foot-links a { color: var(--text-dim); font-weight: 600; transition: color .18s; }
+      .foot-links a { position: relative; color: var(--text-dim); font-weight: 600; transition: color .18s; }
+      .foot-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; background: var(--rose-text); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .25s var(--ease-out); }
       .foot-links a:hover { color: var(--rose-text); }
+      .foot-links a:hover::after { transform: scaleX(1); }
       .foot-copy { width: 100%; color: var(--text-faint); font-size: 0.88rem; }
 
       /* ---------- Toast ---------- */
@@ -599,6 +623,38 @@
         el.classList.add('reveal');
         seen.observe(el);
       });
+
+      // Nav firms up (hairline + stronger blur) once you scroll off the top
+      const nav = document.querySelector('.nav');
+      const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Hero doodles drift toward the cursor (parallax). Skipped for reduced
+      // motion; composes with the CSS float because that uses translate/rotate.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const doodles = [...document.querySelectorAll('.doodle')];
+        const depths = [14, 20, 11, 17, 13, 22];
+        let mx = 0, my = 0, cx = 0, cy = 0, active = false;
+        hero.addEventListener('pointermove', (e) => {
+          const r = hero.getBoundingClientRect();
+          mx = (e.clientX - r.left) / r.width - 0.5;
+          my = (e.clientY - r.top) / r.height - 0.5;
+          active = true;
+        });
+        hero.addEventListener('pointerleave', () => { mx = 0; my = 0; });
+        const drift = () => {
+          cx += (mx - cx) * 0.08; cy += (my - cy) * 0.08;
+          if (active || Math.abs(cx) > 0.001 || Math.abs(cy) > 0.001) {
+            doodles.forEach((d, i) => {
+              const depth = depths[i % depths.length];
+              d.style.transform = `translate(${(cx * depth).toFixed(2)}px, ${(cy * depth).toFixed(2)}px)`;
+            });
+          }
+          requestAnimationFrame(drift);
+        };
+        drift();
+      }
     </script>
   </body>
 </html>
