@@ -227,3 +227,13 @@ img { max-width: 100%; display: block; }
 
 .spin { animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* --------------------------------------------------------------------------
+   Reduced motion: show everything instantly, skip movement
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fade-in-up { animation: none; opacity: 1; }
+    .gallery-card:hover .gif-thumb img { transform: none; }
+    .bento-card:hover, .gallery-card:hover { transform: none; }
+}

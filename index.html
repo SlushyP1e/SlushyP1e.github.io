@@ -7,12 +7,14 @@
     <meta name="description" content="SlushyPie's little corner of the internet. 3D art, VRChat, and the little things I make." />
 
     <!-- Open Graph -->
+    <link rel="canonical" href="https://slushypie.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://slushypie.com/" />
     <meta property="og:title" content="SlushyPie | Home" />
     <meta property="og:description" content="SlushyPie's little corner of the internet. 3D art, VRChat, and the little things I make." />
     <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
     <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://slushypie.com/SlushyPies.png" />
 
     <link rel="icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
@@ -23,7 +25,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" />
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Hero avatar is the LCP element — start fetching it immediately -->
+    <link rel="preload" as="image" href="SlushyPies.webp" type="image/webp" />
+
+    <script src="https://unpkg.com/lucide@1.33.0" defer></script>
 
     <style>
       /* ================================================================
@@ -56,6 +61,14 @@
 
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
+      /* Keyboard users only: jumps past the nav */
+      .skip-link {
+        position: absolute; left: 16px; top: -60px; z-index: 100;
+        padding: 10px 18px; border-radius: 12px;
+        background: var(--rose); color: #1c1c1c; font-weight: 800;
+        transition: top .2s var(--ease-out);
+      }
+      .skip-link:focus { top: 12px; }
       body {
         margin: 0;
         background: var(--bg);
@@ -242,10 +255,12 @@
       .discord-text p { color: var(--text-dim); font-size: 1.08rem; margin: 0 0 18px; }
       .copy-field {
         display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        width: 100%; max-width: 340px; font-family: inherit;
         background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-        padding: 14px 18px; cursor: pointer; max-width: 340px; transition: border-color .18s;
+        padding: 14px 18px; cursor: pointer; transition: border-color .18s;
       }
       .copy-field:hover { border-color: #3a3a3a; }
+      .copy-field:focus-visible { outline: 2px solid var(--rose-soft); outline-offset: 2px; }
       .copy-field .handle { font-weight: 800; font-size: 1.05rem; }
       .copy-field .copy-tag { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text-faint); }
 
@@ -346,6 +361,7 @@
   </head>
 
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <!-- Nav -->
     <nav class="nav">
       <a href="index.html" class="brand">
@@ -357,7 +373,7 @@
       </div>
     </nav>
 
-    <main>
+    <main id="main">
       <!-- Hero -->
       <section class="hero wrap layout-left" id="hero">
         <div class="hero-avatar-wrap">
@@ -436,10 +452,10 @@
             <span class="eyebrow">Discord</span>
             <h2>Let's hang out</h2>
             <p>The easiest way to reach me is to add me on Discord. Copy my handle below and send a request ♡</p>
-            <div class="copy-field" id="copy-field">
+            <button type="button" class="copy-field" id="copy-field" title="Copy Discord handle">
               <span class="handle">@slushypie</span>
               <span class="copy-tag">CLICK TO COPY</span>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -475,6 +491,12 @@
             <h3>BOOTH</h3>
             <p>The same things over on BOOTH, if that's where you usually shop ♡</p>
             <span class="go">Visit BOOTH <i data-lucide="arrow-right"></i></span>
+          </a>
+          <a href="shop/" class="store-card">
+            <span class="ic"><i data-lucide="party-popper"></i></span>
+            <h3>The Web Shop</h3>
+            <p>My very own little shop page, with every storefront in one place. There may be secrets ^~^</p>
+            <span class="go">Open the web shop <i data-lucide="arrow-right"></i></span>
           </a>
         </div>
         <p class="store-note">Thank you for supporting the little things I make ♡</p>
@@ -566,7 +588,10 @@
     <div id="toast" class="toast"><i data-lucide="check-circle"></i> <span>Copied to clipboard!</span></div>
 
     <script>
-      window.lucide && lucide.createIcons();
+      // lucide loads with defer, so it may not exist yet while this runs —
+      // wait for DOMContentLoaded (deferred scripts run before it fires).
+      const initIcons = () => { window.lucide && lucide.createIcons(); };
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initIcons); } else { initIcons(); }
       document.getElementById('year').textContent = new Date().getFullYear();
 
       // Live Aussie time

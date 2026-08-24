@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://slushypie.com/sitemap.xml

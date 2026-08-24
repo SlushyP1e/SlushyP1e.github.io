@@ -7,6 +7,7 @@
     <meta name="description" content="SlushyPie's collection of GIFs." />
 
     <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://slushypie.com/gif.html" />
     <meta property="og:url" content="https://slushypie.com/gif.html" />
     <meta property="og:title" content="GIF Gallery | SlushyPie" />
     <meta property="og:description" content="SlushyPie's collection of GIFs." />
@@ -22,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@1.33.0" defer></script>
 
     <link rel="stylesheet" href="theme.css" />
   </head>
@@ -114,13 +115,13 @@
           card.className = 'gallery-card fade-in-up';
           card.style.animationDelay = `${i * 0.08}s`;
           card.innerHTML = `
-            <div class="gif-thumb js-view-trigger" data-url="${url}" data-name="${filename}">
+            <div class="gif-thumb js-view-trigger" data-url="${url}" data-name="${filename}" role="button" tabindex="0" aria-label="View ${filename} larger">
               <img data-src="${url}" src="" alt="${filename}" />
               <div class="overlay"><div class="zoom"><i data-lucide="maximize-2"></i></div></div>
             </div>
             <div class="gif-meta">
               <span class="gif-name" title="${filename}">${filename}</span>
-              <button class="gif-copy js-copy-trigger" title="Copy Link" data-url="${url}"><i data-lucide="link"></i></button>
+              <button class="gif-copy js-copy-trigger" title="Copy Link" aria-label="Copy link to ${filename}" data-url="${url}"><i data-lucide="link"></i></button>
             </div>`;
           els.grid.appendChild(card);
           const lazyImg = card.querySelector('img[data-src]');
@@ -134,12 +135,29 @@
           const viewTrigger = e.target.closest('.js-view-trigger');
           const copyTrigger = e.target.closest('.js-copy-trigger');
           if (copyTrigger) { handleCopy(copyTrigger.dataset.url); }
-          else if (viewTrigger) { openModal(viewTrigger.dataset.url, viewTrigger.dataset.name); }
+          else if (viewTrigger) { openModal(viewTrigger.dataset.url, viewTrigger.dataset.name, viewTrigger); }
+        });
+        // Keyboard support for the gallery cards
+        els.grid.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          const viewTrigger = e.target.closest('.js-view-trigger');
+          if (!viewTrigger || e.target.closest('.js-copy-trigger')) return;
+          e.preventDefault();
+          openModal(viewTrigger.dataset.url, viewTrigger.dataset.name, viewTrigger);
         });
         els.closeBtn.addEventListener('click', closeModal);
         els.backdrop.addEventListener('click', closeModal);
         document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && els.modal.classList.contains('open')) closeModal();
+          if (e.key === 'Escape' && els.modal.classList.contains('open')) { closeModal(); return; }
+          // Keep Tab focus inside the open modal
+          if (e.key === 'Tab' && els.modal.classList.contains('open')) {
+            const focusables = els.modal.querySelectorAll('button, [href], img[tabindex]');
+            if (!focusables.length) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
         });
       };
 
@@ -156,13 +174,17 @@
         setTimeout(() => { els.toast.classList.remove('show', 'toast-anim'); }, 2000);
       };
 
-      const openModal = (url, name) => {
+      let lastFocused = null;
+      const openModal = (url, name, trigger) => {
+        lastFocused = trigger || document.activeElement;
         els.modalImg.src = url; els.modalImg.alt = name;
         els.modal.classList.add('open');
+        els.modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         requestAnimationFrame(() => {
           els.backdrop.classList.add('in');
           els.content.classList.add('in');
+          els.closeBtn.focus();
         });
       };
 
@@ -171,12 +193,15 @@
         els.content.classList.remove('in');
         setTimeout(() => {
           els.modal.classList.remove('open');
+          els.modal.setAttribute('aria-hidden', 'true');
           document.body.style.overflow = 'auto';
           els.modalImg.src = '';
         }, 200);
+        if (lastFocused) { lastFocused.focus(); lastFocused = null; }
       };
 
-      // Background parallax
+      // Background parallax — skipped entirely when reduced motion is preferred
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       let mouse = { x: 0, y: 0 }, current = { x: 0, y: 0 }, t = 0;
       document.addEventListener('mousemove', (e) => {
         mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
@@ -194,6 +219,7 @@
 
       window.addEventListener('load', () => {
         init();
+        if (!reduceMotion) animLoop();
         document.getElementById('year').textContent = new Date().getFullYear();
       });
     </script>

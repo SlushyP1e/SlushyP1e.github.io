@@ -7,10 +7,13 @@
     <meta name="description" content="VRCOSC Pulse presets made by SlushyPie. Free downloads." />
 
     <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://slushypie.com/vrcosc/" />
     <meta property="og:url" content="https://slushypie.com/vrcosc/" />
     <meta property="og:title" content="SlushyPie | VRCOSC Pulse Presets" />
     <meta property="og:description" content="VRCOSC Pulse presets made by SlushyPie. Free downloads." />
     <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:image" content="https://slushypie.com/SlushyPies.png" />
 
     <link rel="icon" href="../favicon.ico" />
     <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
@@ -20,7 +23,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@1.33.0" defer></script>
 
     <link rel="stylesheet" href="../theme.css" />
   </head>
@@ -144,7 +147,10 @@
           window.lucide && lucide.createIcons();
         });
 
-      window.lucide && lucide.createIcons();
+      // lucide loads with defer — run once it's ready (deferred scripts
+      // execute before DOMContentLoaded, so this always finds lucide)
+      const initIcons = () => { window.lucide && lucide.createIcons(); };
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initIcons); } else { initIcons(); }
     </script>
   </body>
 </html>

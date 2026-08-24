@@ -11,9 +11,12 @@ Static HTML/CSS/JS. No build step, no frameworks.
 | --- | --- |
 | `index.html` | The landing page. Fully self-contained (its CSS and JS are inline). |
 | `gif.html` | GIF gallery. Reads its list from the `GIF_FILES` array at the top of its script. |
-| `gif/` | The actual gif files. |
+| `gif/` | The actual gif files (compressed with ffmpeg — keep new ones small!). |
 | `vrcosc/` | VRCOSC Pulse preset downloads, driven by `vrcosc/manifest.json`. |
-| `theme.css` | Shared styles for the two sub-pages only. |
+| `shop/` | A silly extra shop page linking every storefront. Uses compiled Tailwind (`styles.css`) plus `flare.js`/`flare.css`. |
+| `theme.css` | Shared styles for the sub-pages (`gif.html`, `vrcosc/`, `404.html`). |
+| `404.html` | Custom not-found page. Fully self-contained — use absolute paths in it. |
+| `robots.txt` / `sitemap.xml` | Search engine basics. Add new pages to the sitemap. |
 
 Everything else in the root is favicons and mascot images.
 
@@ -33,7 +36,8 @@ The hero has a small toggle (desktop only) to switch between the left-aligned
 layout (default) and a centered one; the choice is saved to `localStorage`.
 
 External runtime deps (loaded by the browser): Google Fonts and
-[lucide](https://lucide.dev) icons via unpkg.
+[lucide](https://lucide.dev) icons via unpkg (pinned to `1.33.0` — bump the
+version on all four pages if you update it).
 
 ## Local preview
 
