@@ -13,7 +13,6 @@ Static HTML/CSS/JS. No build step, no frameworks.
 | `gif.html` | GIF gallery. Reads its list from the `GIF_FILES` array at the top of its script. |
 | `gif/` | The actual gif files (compressed with ffmpeg — keep new ones small!). |
 | `vrcosc/` | VRCOSC Pulse preset downloads, driven by `vrcosc/manifest.json`. |
-| `shop/` | A silly extra shop page linking every storefront. Uses compiled Tailwind (`styles.css`) plus `flare.js`/`flare.css`. |
 | `theme.css` | Shared styles for the sub-pages (`gif.html`, `vrcosc/`, `404.html`). |
 | `404.html` | Custom not-found page. Fully self-contained — use absolute paths in it. |
 | `robots.txt` / `sitemap.xml` | Search engine basics. Add new pages to the sitemap. |
