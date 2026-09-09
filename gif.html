@@ -165,7 +165,6 @@
         try {
           await navigator.clipboard.writeText(text);
           showToast();
-          if (window.playSlushySound) window.playSlushySound('success');
         } catch (err) { console.error('Failed to copy: ', err); }
       };
 
