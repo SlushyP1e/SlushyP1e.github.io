@@ -12,18 +12,22 @@
     <meta property="og:title" content="GIF Gallery | SlushyPie" />
     <meta property="og:description" content="SlushyPie's collection of GIFs." />
     <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:image" content="https://slushypie.com/SlushyPies.png" />
+    <meta property="og:image:alt" content="SlushyPie" />
+    <meta property="og:site_name" content="SlushyPie" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://slushypie.com/SlushyPies.png" />
 
     <link rel="icon" href="favicon.ico" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <meta name="theme-color" content="#121212" />
+    <meta name="color-scheme" content="dark" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
 
-    <script src="https://unpkg.com/lucide@1.33.0" defer></script>
+    <script src="vendor/lucide.min.js" defer></script>
 
     <link rel="stylesheet" href="theme.css" />
   </head>
@@ -59,14 +63,14 @@
     <!-- Modal -->
     <div id="modal" class="modal" aria-hidden="true">
       <div id="modal-backdrop" class="modal-backdrop"></div>
-      <div id="modal-content" class="modal-content">
+      <div id="modal-content" class="modal-content" role="dialog" aria-modal="true" aria-label="GIF preview">
         <button id="close-modal-btn" class="modal-close"><i data-lucide="x"></i></button>
         <div class="modal-frame"><img id="modal-img" src="" alt="" /></div>
       </div>
     </div>
 
     <!-- Toast -->
-    <div id="toast" class="toast">
+    <div id="toast" class="toast" role="status" aria-live="polite">
       <i data-lucide="check-circle"></i>
       <span class="mono">LINK COPIED!</span>
     </div>

@@ -10,25 +10,29 @@
     <link rel="canonical" href="https://slushypie.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://slushypie.com/" />
+    <meta property="og:site_name" content="SlushyPie" />
     <meta property="og:title" content="SlushyPie | Home" />
     <meta property="og:description" content="SlushyPie's little corner of the internet. 3D art, VRChat, and the little things I make." />
     <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:image" content="https://slushypie.com/SlushyPies.png" />
+    <meta property="og:image:alt" content="SlushyPie" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://slushypie.com/SlushyPies.png" />
 
     <link rel="icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <meta name="theme-color" content="#121212" />
+    <meta name="color-scheme" content="dark" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&family=Playfair+Display:ital,wght@1,600&display=swap" />
 
     <!-- Hero avatar is the LCP element — start fetching it immediately -->
     <link rel="preload" as="image" href="SlushyPies.webp" type="image/webp" />
 
-    <script src="https://unpkg.com/lucide@1.33.0" defer></script>
+    <script src="vendor/lucide.min.js" defer></script>
 
     <style>
       /* ================================================================
@@ -47,7 +51,7 @@
         --border-soft: #242424;
         --text: #ededed;
         --text-dim: #9e9e9e;
-        --text-faint: #6d6d6d;
+        --text-faint: #8a8a8a;
         --rose: #e7b7c7;          /* flat pastel pink accent */
         --rose-soft: #d5a6b6;
         --rose-text: #dda9bb;     /* pastel pink for accent text */
@@ -57,6 +61,7 @@
         --maxw: 1040px;
         --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* soft, plush deceleration */
         font-synthesis: none;
+        color-scheme: dark;
       }
 
       * { box-sizing: border-box; }
@@ -88,6 +93,7 @@
         padding: 16px 20px;
         max-width: var(--maxw); margin: 0 auto;
         background: color-mix(in srgb, var(--bg) 84%, transparent);
+        -webkit-backdrop-filter: blur(8px);
         backdrop-filter: blur(8px);
         border-bottom: 1px solid transparent;
         transition: background .3s ease, border-color .3s ease;
@@ -102,7 +108,7 @@
       .nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
       .nav-link {
         display: inline-flex; align-items: center; gap: 8px;
-        padding: 0 15px; height: 42px; border-radius: 11px;
+        padding: 0 15px; height: 44px; border-radius: 11px;
         border: 1px solid var(--border); background: var(--panel);
         color: var(--text-dim); font-weight: 700; font-size: 0.95rem;
         transition: color .18s, background .18s, border-color .18s;
@@ -123,9 +129,8 @@
       }
 
       /* ---------- Hero ---------- */
-      .hero { padding-top: 44px; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+      .hero { padding-top: 44px; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: opacity .2s ease; }
       /* Smooth crossfade when switching hero layout */
-      .hero { transition: opacity .2s ease; }
       .hero.switching { opacity: 0; }
       .hero-copy { display: contents; }
       .hero-avatar-wrap { position: relative; width: 240px; height: 240px; margin: 20px auto 28px; flex-shrink: 0; }
@@ -216,7 +221,6 @@
         font-weight: 800; font-size: 1.02rem; cursor: pointer;
         border: 1px solid transparent; transition: transform .12s, filter .18s, background .18s, border-color .18s;
       }
-      .btn:active { transform: translateY(1px); }
       .btn-primary { background: var(--rose); color: #1c1c1c; position: relative; overflow: hidden; }
       /* Soft light sweeps across on hover */
       .btn-primary::after {
@@ -230,6 +234,7 @@
       .btn-primary svg { width: 22px; height: 22px; }
       .btn-ghost { background: var(--panel); color: var(--text); border-color: var(--border); }
       .btn-ghost:hover { background: var(--panel-2); border-color: #3a3a3a; }
+      .btn:active { transform: translateY(1px); }
       .btn-ghost i { width: 20px; height: 20px; color: var(--text-dim); }
 
       .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 30px auto 0; max-width: 640px; }
@@ -370,15 +375,18 @@
   </head>
 
   <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+      <symbol id="ico-discord" viewBox="0 0 24 24"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></symbol>
+    </svg>
     <a class="skip-link" href="#main">Skip to content</a>
     <!-- Nav -->
     <nav class="nav">
       <a href="index.html" class="brand">
-        <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" onerror="this.src='SlushyPies.png'" />
+        <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" decoding="async" onerror="this.src='SlushyPies.png'" />
         <span class="name">SlushyPie</span>
       </a>
       <div class="nav-right">
-        <button type="button" id="layout-toggle" class="nav-link icon-only" title="Switch hero layout" aria-label="Switch hero layout"><i data-lucide="panel-left"></i></button>
+        <button type="button" id="layout-toggle" class="nav-link icon-only" title="Switch hero layout" aria-label="Switch hero layout" aria-pressed="false"><i data-lucide="panel-left"></i></button>
       </div>
     </nav>
 
@@ -388,7 +396,7 @@
         <div class="hero-avatar-wrap">
           <picture>
             <source srcset="SlushyPies.webp" type="image/webp" />
-            <img src="SlushyPies.png" alt="SlushyPie" class="hero-avatar" />
+            <img src="SlushyPies.png" alt="SlushyPie" class="hero-avatar" decoding="async" />
           </picture>
           <span class="doodle d1"><i data-lucide="star"></i></span>
           <span class="doodle d2"><i data-lucide="sparkles"></i></span>
@@ -408,13 +416,13 @@
         So glad you're here ^~^
       </p>
       <a href="https://discord.gg/knPakW8NHy" target="_blank" rel="noopener noreferrer" class="hero-discord">
-        <svg role="img" viewBox="0 0 24 24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-discord" /></svg>
         join the discord
       </a>
 
         <div class="cta-row">
           <a href="#discord" class="btn btn-primary">
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#ico-discord" /></svg>
             Add me on Discord
           </a>
           <a href="#store" class="btn btn-ghost"><i data-lucide="shopping-bag"></i> Visit the shop</a>
@@ -433,7 +441,7 @@
         <div class="about">
           <div>
             <span class="eyebrow">About me</span>
-            <p class="serif">i just really like making cute little things.</p>
+            <h2 class="serif">i just really like making cute little things.</h2>
             <ul class="facts">
               <li><i data-lucide="user"></i><span>A guy from <strong>Australia</strong> (you can call me Slushy)</span></li>
               <li><i data-lucide="footprints"></i><span>Full-body in VRChat with 3 Vive Ultimate Trackers</span></li>
@@ -521,6 +529,11 @@
             <span><span class="t-title">YouTube</span><span class="t-sub">@slushypievrc</span></span>
             <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
           </a>
+          <a href="https://x.com/slushypievrc" target="_blank" rel="noopener noreferrer" class="link-tile">
+            <span class="ic"><svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></span>
+            <span><span class="t-title">X</span><span class="t-sub">@slushypievrc</span></span>
+            <span class="arrow"><i data-lucide="arrow-up-right"></i></span>
+          </a>
           <a href="https://vrc.group/SLUSHY.3942" target="_blank" rel="noopener noreferrer" class="link-tile">
             <span class="ic"><i data-lucide="users"></i></span>
             <span><span class="t-title">VRChat Group</span><span class="t-sub">Join my group for announcements on new assets and discounts</span></span>
@@ -566,7 +579,7 @@
           <p>Add me on Discord, grab something from the shop, or just poke around ^~^</p>
           <div class="cta-row">
             <a href="#discord" class="btn btn-primary">
-              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.891.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#ico-discord" /></svg>
               Add me on Discord
             </a>
             <a href="#store" class="btn btn-ghost"><i data-lucide="shopping-bag"></i> Browse the shop</a>
@@ -578,7 +591,7 @@
     <footer>
       <div class="foot">
         <a href="index.html" class="brand">
-          <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" onerror="this.src='SlushyPies.png'" />
+          <img class="avatar" src="SlushyPies.webp" alt="SlushyPie" loading="lazy" decoding="async" onerror="this.src='SlushyPies.png'" />
           <span class="name">SlushyPie</span>
         </a>
         <div class="foot-links">
@@ -592,7 +605,7 @@
     </footer>
 
     <!-- Copied toast -->
-    <div id="toast" class="toast"><i data-lucide="check-circle"></i> <span>Copied to clipboard!</span></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"><i data-lucide="check-circle"></i> <span>Copied to clipboard!</span></div>
 
     <script>
       // lucide loads with defer, so it may not exist yet while this runs —
@@ -607,7 +620,7 @@
         const opts = { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', hour12: false };
         timeEl.textContent = new Date().toLocaleTimeString('en-AU', opts);
       };
-      setInterval(updateTime, 1000); updateTime();
+      setInterval(updateTime, 10000); updateTime();
 
       // Copy Discord handle
       const toast = document.getElementById('toast');
@@ -620,9 +633,11 @@
 
       // Hero layout toggle (left is the default), with a smooth crossfade
       const hero = document.getElementById('hero');
+      const layoutToggle = document.getElementById('layout-toggle');
       const applyLayout = (l) => {
         hero.classList.toggle('layout-left', l !== 'center');
         hero.classList.toggle('layout-center', l === 'center');
+        layoutToggle.setAttribute('aria-pressed', String(l === 'center'));
       };
       const setLayout = (l, animate) => {
         if (!animate) { applyLayout(l); return; }
@@ -632,11 +647,13 @@
           requestAnimationFrame(() => hero.classList.remove('switching'));
         }, 200);
       };
-      setLayout(localStorage.getItem('heroLayout') || 'left', false);
-      document.getElementById('layout-toggle').addEventListener('click', () => {
+      let savedLayout = null;
+      try { savedLayout = localStorage.getItem('heroLayout'); } catch {}
+      setLayout(savedLayout || 'left', false);
+      layoutToggle.addEventListener('click', () => {
         const next = hero.classList.contains('layout-center') ? 'left' : 'center';
         setLayout(next, true);
-        localStorage.setItem('heroLayout', next);
+        try { localStorage.setItem('heroLayout', next); } catch {}
       });
 
       // Scroll reveal: sections and cards rise in as you scroll.

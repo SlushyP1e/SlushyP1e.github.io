@@ -14,6 +14,7 @@ Static HTML/CSS/JS. No build step, no frameworks.
 | `gif/` | The actual gif files (compressed with ffmpeg — keep new ones small!). |
 | `vrcosc/` | VRCOSC Pulse preset downloads, driven by `vrcosc/manifest.json`. |
 | `theme.css` | Shared styles for the sub-pages (`gif.html`, `vrcosc/`, `404.html`). |
+| `vendor/` | Self-hosted runtime scripts — `lucide.min.js` (icons, pinned). |
 | `404.html` | Custom not-found page. Fully self-contained — use absolute paths in it. |
 | `robots.txt` / `sitemap.xml` | Search engine basics. Add new pages to the sitemap. |
 
@@ -34,9 +35,9 @@ Everything else in the root is favicons and mascot images.
 The hero has a small toggle (desktop only) to switch between the left-aligned
 layout (default) and a centered one; the choice is saved to `localStorage`.
 
-External runtime deps (loaded by the browser): Google Fonts and
-[lucide](https://lucide.dev) icons via unpkg (pinned to `1.33.0` — bump the
-version on all four pages if you update it).
+External runtime deps (loaded by the browser): Google Fonts (from
+`fonts.googleapis.com`) and [lucide](https://lucide.dev) icons, self-hosted at
+`vendor/lucide.min.js` (pinned to `1.33.0` — replace that one file to update).
 
 ## Local preview
 
