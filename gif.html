@@ -14,7 +14,7 @@
     <meta property="og:image" content="https://slushypie.com/SlushyPies.png" />
     <meta property="og:image:alt" content="SlushyPie" />
     <meta property="og:site_name" content="SlushyPie" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content="https://slushypie.com/SlushyPies.png" />
 
     <link rel="icon" href="favicon.ico" />
@@ -25,206 +25,73 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
-
-    <script src="vendor/lucide.min.js" defer></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Patrick+Hand&display=swap" />
 
     <link rel="stylesheet" href="theme.css" />
+    <script src="site.js" defer></script>
   </head>
 
   <body>
-    <div class="bg-mascot" aria-hidden="true">
-      <img id="bg-layer" src="SlushyPieBannerTransparent.webp" alt="" loading="lazy" onerror="this.src='SlushyPieBannerTransparent.png'" />
-    </div>
+    <div class="page">
+      <header class="top">
+        <a href="./"><img class="wordmark" src="wordmark.webp" alt="SlushyPie" width="367" height="76" /></a>
+        <nav aria-label="Main"><a href="./">← back home</a></nav>
+      </header>
 
-    <a href="index.html" aria-label="Back Home" class="float-btn tl" title="Back Home">
-      <i data-lucide="arrow-left"></i>
-    </a>
-
-    <main class="wrap">
-      <div class="page-header">
-        <div>
-          <a href="index.html" class="back-btn"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Home</a>
-          <h1 class="page-title"><span class="grad-text">GIF</span> Gallery</h1>
-          <p class="mono muted" style="margin-top:10px;font-size:0.85rem;">&gt; My collection of gifs. Click to view and/or copy.</p>
+      <main>
+        <div class="page-head">
+          <h1><span class="drawn">GIF Gallery</span></h1>
+          <p>My collection of gifs. Click to view and/or copy.</p>
         </div>
-      </div>
+        <div id="gif-wall" class="gif-wall"></div>
+      </main>
 
-      <div id="gif-grid" class="gif-grid"></div>
-
-      <div id="empty-state" class="bento-card empty-state" style="display:none;">
-        <i data-lucide="film"></i>
-        <p class="heading-font" style="font-size:1.1rem;color:var(--text-dim);">No GIFs found in the /gif folder yet!</p>
-      </div>
-
-      <div class="footer">&copy; <span id="year">2025</span> SlushyPie <span class="heart">♡</span> made with love</div>
-    </main>
-
-    <!-- Modal -->
-    <div id="modal" class="modal" aria-hidden="true">
-      <div id="modal-backdrop" class="modal-backdrop"></div>
-      <div id="modal-content" class="modal-content" role="dialog" aria-modal="true" aria-label="GIF preview">
-        <button id="close-modal-btn" class="modal-close"><i data-lucide="x"></i></button>
-        <div class="modal-frame"><img id="modal-img" src="" alt="" /></div>
-      </div>
+      <footer class="foot">
+        <span>&copy; <span class="year">2026</span> SlushyPie <span class="heart">♡</span> made with love</span>
+      </footer>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="toast" role="status" aria-live="polite">
-      <i data-lucide="check-circle"></i>
-      <span class="mono">LINK COPIED!</span>
-    </div>
+    <dialog id="lightbox" class="lightbox" aria-label="GIF preview">
+      <img id="lightbox-img" src="data:," alt="" />
+      <form method="dialog"><button class="btn ink">close</button></form>
+    </dialog>
 
     <script>
-      // Add new gifs here: drop the file in /gif and list its filename below.
-      const GIF_FILES = [
-        'slushypie-vrchat.gif',
-        'slushypie-eat.gif',
-        'SlushyPieMyBeloved.gif',
-        'chompy.gif',
-        'dap.gif',
+      // Add new gifs here: drop the file in /gif and list it below with its pixel size
+      // (the size stops the page jumping around while gifs load).
+      const GIFS = [
+        { file: 'slushypie-vrchat.gif', w: 281, h: 498 },
+        { file: 'slushypie-eat.gif', w: 253, h: 450 },
+        { file: 'SlushyPieMyBeloved.gif', w: 400, h: 300 },
+        { file: 'chompy.gif', w: 380, h: 705 },
+        { file: 'dap.gif', w: 498, h: 411 },
       ];
-      // Resolved relative to the page so it works on any host (incl. GitHub Pages subpaths)
-      const BASE_URL = new URL('gif/', window.location.href).href;
 
-      const els = {
-        grid: document.getElementById('gif-grid'),
-        empty: document.getElementById('empty-state'),
-        modal: document.getElementById('modal'),
-        backdrop: document.getElementById('modal-backdrop'),
-        content: document.getElementById('modal-content'),
-        modalImg: document.getElementById('modal-img'),
-        closeBtn: document.getElementById('close-modal-btn'),
-        toast: document.getElementById('toast'),
-        bg: document.getElementById('bg-layer'),
-      };
+      const wall = document.getElementById('gif-wall');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
 
-      const init = () => { window.lucide && lucide.createIcons(); renderGrid(); setupEventListeners(); animLoop(); };
-
-      const renderGrid = () => {
-        if (!GIF_FILES.length) { els.empty.style.display = 'block'; return; }
-        const observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const img = entry.target;
-              if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
-              obs.unobserve(img);
-            }
-          });
-        }, { rootMargin: '200px' });
-
-        GIF_FILES.forEach((filename, i) => {
-          const url = BASE_URL + filename;
-          const card = document.createElement('div');
-          card.className = 'gallery-card fade-in-up';
-          card.style.animationDelay = `${i * 0.08}s`;
-          card.innerHTML = `
-            <div class="gif-thumb js-view-trigger" data-url="${url}" data-name="${filename}" role="button" tabindex="0" aria-label="View ${filename} larger">
-              <img data-src="${url}" src="" alt="${filename}" />
-              <div class="overlay"><div class="zoom"><i data-lucide="maximize-2"></i></div></div>
-            </div>
-            <div class="gif-meta">
-              <span class="gif-name" title="${filename}">${filename}</span>
-              <button class="gif-copy js-copy-trigger" title="Copy Link" aria-label="Copy link to ${filename}" data-url="${url}"><i data-lucide="link"></i></button>
-            </div>`;
-          els.grid.appendChild(card);
-          const lazyImg = card.querySelector('img[data-src]');
-          if (lazyImg) observer.observe(lazyImg);
+      GIFS.forEach(({ file, w, h }) => {
+        const url = new URL(`gif/${file}`, location.href).href;
+        const label = file.replace(/\.gif$/i, '');
+        const card = document.createElement('figure');
+        card.className = 'polaroid tape';
+        card.innerHTML = `
+          <button type="button" class="gif-view" aria-label="View ${label} larger">
+            <img src="gif/${file}" alt="${label}" width="${w}" height="${h}" loading="lazy" />
+          </button>
+          <figcaption>${label}</figcaption>
+          <button type="button" class="copy-link" data-copy="${url}" data-toast="link copied ♡" aria-label="Copy link to ${label}">copy link</button>`;
+        card.querySelector('.gif-view').addEventListener('click', () => {
+          lightboxImg.src = `gif/${file}`;
+          lightboxImg.alt = label;
+          lightbox.showModal();
         });
-        window.lucide && lucide.createIcons();
-      };
-
-      const setupEventListeners = () => {
-        els.grid.addEventListener('click', (e) => {
-          const viewTrigger = e.target.closest('.js-view-trigger');
-          const copyTrigger = e.target.closest('.js-copy-trigger');
-          if (copyTrigger) { handleCopy(copyTrigger.dataset.url); }
-          else if (viewTrigger) { openModal(viewTrigger.dataset.url, viewTrigger.dataset.name, viewTrigger); }
-        });
-        // Keyboard support for the gallery cards
-        els.grid.addEventListener('keydown', (e) => {
-          if (e.key !== 'Enter' && e.key !== ' ') return;
-          const viewTrigger = e.target.closest('.js-view-trigger');
-          if (!viewTrigger || e.target.closest('.js-copy-trigger')) return;
-          e.preventDefault();
-          openModal(viewTrigger.dataset.url, viewTrigger.dataset.name, viewTrigger);
-        });
-        els.closeBtn.addEventListener('click', closeModal);
-        els.backdrop.addEventListener('click', closeModal);
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && els.modal.classList.contains('open')) { closeModal(); return; }
-          // Keep Tab focus inside the open modal
-          if (e.key === 'Tab' && els.modal.classList.contains('open')) {
-            const focusables = els.modal.querySelectorAll('button, [href], img[tabindex]');
-            if (!focusables.length) return;
-            const first = focusables[0];
-            const last = focusables[focusables.length - 1];
-            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-          }
-        });
-      };
-
-      const handleCopy = async (text) => {
-        try {
-          await navigator.clipboard.writeText(text);
-          showToast();
-        } catch (err) { console.error('Failed to copy: ', err); }
-      };
-
-      const showToast = () => {
-        els.toast.classList.add('show', 'toast-anim');
-        setTimeout(() => { els.toast.classList.remove('show', 'toast-anim'); }, 2000);
-      };
-
-      let lastFocused = null;
-      const openModal = (url, name, trigger) => {
-        lastFocused = trigger || document.activeElement;
-        els.modalImg.src = url; els.modalImg.alt = name;
-        els.modal.classList.add('open');
-        els.modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        requestAnimationFrame(() => {
-          els.backdrop.classList.add('in');
-          els.content.classList.add('in');
-          els.closeBtn.focus();
-        });
-      };
-
-      const closeModal = () => {
-        els.backdrop.classList.remove('in');
-        els.content.classList.remove('in');
-        setTimeout(() => {
-          els.modal.classList.remove('open');
-          els.modal.setAttribute('aria-hidden', 'true');
-          document.body.style.overflow = 'auto';
-          els.modalImg.src = '';
-        }, 200);
-        if (lastFocused) { lastFocused.focus(); lastFocused = null; }
-      };
-
-      // Background parallax — skipped entirely when reduced motion is preferred
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let mouse = { x: 0, y: 0 }, current = { x: 0, y: 0 }, t = 0;
-      document.addEventListener('mousemove', (e) => {
-        mouse.x = (e.clientX / window.innerWidth - 0.5) * 20;
-        mouse.y = (e.clientY / window.innerHeight - 0.5) * 20;
+        wall.append(card);
       });
-      const animLoop = () => {
-        t += 0.005;
-        const tx = Math.sin(t) * 15 + mouse.x;
-        const ty = Math.sin(t * 0.8) * 10 + mouse.y;
-        current.x += (tx - current.x) * 0.05;
-        current.y += (ty - current.y) * 0.05;
-        if (els.bg) els.bg.style.transform = `translate3d(${current.x}px, ${current.y}px, 0) scale(1.1)`;
-        requestAnimationFrame(animLoop);
-      };
 
-      window.addEventListener('load', () => {
-        init();
-        if (!reduceMotion) animLoop();
-        document.getElementById('year').textContent = new Date().getFullYear();
-      });
+      // Clicking the backdrop closes too (the backdrop counts as the dialog itself)
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.close(); });
     </script>
   </body>
 </html>

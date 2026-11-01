@@ -1,7 +1,7 @@
 # slushypie.com
 
-SlushyPie's personal landing page. Flat neutral gray, one flat pastel-pink
-accent, soft rounded cards. Made with love ♡
+SlushyPie's personal landing page. A scrapbook on a dark desk: paper, tape,
+and one pastel pink. Made with love ♡
 
 Static HTML/CSS/JS. No build step, no frameworks.
 
@@ -9,35 +9,28 @@ Static HTML/CSS/JS. No build step, no frameworks.
 
 | Path | What it is |
 | --- | --- |
-| `index.html` | The landing page. Fully self-contained (its CSS and JS are inline). |
-| `gif.html` | GIF gallery. Reads its list from the `GIF_FILES` array at the top of its script. |
+| `index.html` | The landing page. |
+| `gif.html` | GIF gallery. Reads its list from the `GIFS` array at the top of its script. |
 | `gif/` | The actual gif files (compressed with ffmpeg — keep new ones small!). |
-| `vrcosc/` | VRCOSC Pulse preset downloads, driven by `vrcosc/manifest.json`. |
-| `theme.css` | Shared styles for the sub-pages (`gif.html`, `vrcosc/`, `404.html`). |
-| `vendor/` | Self-hosted runtime scripts — `lucide.min.js` (icons, pinned). |
-| `404.html` | Custom not-found page. Fully self-contained — use absolute paths in it. |
+| `photos/` | VRChat photos and the face tracker picture (webp, keep them small). |
+| `theme.css` | The one stylesheet, shared by every page. |
+| `site.js` | Shared script: footer year, Aussie clock, copy buttons and toast. |
+| `wordmark.webp` | The SlushyPie logo, cropped from the banner. |
+| `404.html` | Custom not-found page. Use absolute paths in it. |
 | `robots.txt` / `sitemap.xml` | Search engine basics. Add new pages to the sitemap. |
 
 Everything else in the root is favicons and mascot images.
 
 ## Editing
 
-- **Landing page text/links/colors** — everything is in `index.html`. There is
-  an editing guide comment at the top of its `<style>` block, and each section
-  of the body is labeled (Hero, About, Discord, Store, Elsewhere, Final CTA).
-- **Colors** — one set of CSS variables at the top of `index.html` for the
-  landing page, and a matching set at the top of `theme.css` for the sub-pages.
-- **Add a gif** — drop the file in `gif/` and add its filename to `GIF_FILES`
-  in `gif.html`.
-- **Add a VRCOSC preset** — add the file under `vrcosc/` and list it in
-  `vrcosc/manifest.json`.
-
-The hero has a small toggle (desktop only) to switch between the left-aligned
-layout (default) and a centered one; the choice is saved to `localStorage`.
+- **Landing page text/links** — everything is in `index.html`, and each section
+  of the body is labeled (Hero, GIFs, About, Store, Discord, Elsewhere).
+- **Colors and fonts** — the variables at the top of `theme.css`.
+- **Add a gif** — drop the file in `gif/` and add its filename and pixel size to
+  `GIFS` in `gif.html`.
 
 External runtime deps (loaded by the browser): Google Fonts (from
-`fonts.googleapis.com`) and [lucide](https://lucide.dev) icons, self-hosted at
-`vendor/lucide.min.js` (pinned to `1.33.0` — replace that one file to update).
+`fonts.googleapis.com`).
 
 ## Local preview
 
